@@ -1,58 +1,44 @@
 package edu.jensen.camerashopapi.entity;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+import java.math.BigDecimal;
 
 @Entity
+@Table(name = "order_items")
 public class Order_item {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    private int order_id;
-    private int product_id;
+
+    @Column(name = "order_id")
+    private int orderId;
+
+    @Column(name = "product_id")
+    private int productId;
+
     private int quantity;
-    private float price;
 
-    public int getId() {
-        return id;
-    }
+    @Column(name = "unit_price")
+    private BigDecimal unitPrice;
 
-    public void setId(int id) {
-        this.id = id;
-    }
+    public int getId() { return id; }
+    public void setId(int id) { this.id = id; }
 
-    public int getOrder_id() {
-        return order_id;
-    }
+    public int getOrderId() { return orderId; }
+    public void setOrderId(int orderId) { this.orderId = orderId; }
 
-    public void setOrder_id(int order_id) {
-        this.order_id = order_id;
-    }
+    public int getProductId() { return productId; }
+    public void setProductId(int productId) { this.productId = productId; }
 
-    public int getProduct_id() {
-        return product_id;
-    }
+    public int getQuantity() { return quantity; }
+    public void setQuantity(int quantity) { this.quantity = quantity; }
 
-    public void setProduct_id(int product_id) {
-        this.product_id = product_id;
-    }
-
-    public int getQuantity() {
-        return quantity;
-    }
-
-    public void setQuantity(int quantity) {
-        this.quantity = quantity;
-    }
-
-    public float getPrice() {
-        return price;
-    }
-
-    public void setPrice(float price) {
-        this.price = price;
-    }
+    public BigDecimal getUnitPrice() { return unitPrice; }
+    public void setUnitPrice(BigDecimal unitPrice) { this.unitPrice = unitPrice; }
 }

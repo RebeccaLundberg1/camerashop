@@ -1,20 +1,28 @@
 package edu.jensen.camerashopapi.entity;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+import java.time.LocalDateTime;
 
 @Entity
+@Table(name = "orders")
 public class Order {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    private int customer_id;
-    private int date;
+
+    @Column(name = "customer_id")
+    private int customerId;
+
+    @Column(name = "order_date")
+    private LocalDateTime orderDate;
+
     private String status;
-    private float total_amount;
 
     public int getId() {
         return id;
@@ -24,20 +32,20 @@ public class Order {
         this.id = id;
     }
 
-    public int getCustomer_id() {
-        return customer_id;
+    public int getCustomerId() {
+        return customerId;
     }
 
-    public void setCustomer_id(int customer_id) {
-        this.customer_id = customer_id;
+    public void setCustomerId(int customerId) {
+        this.customerId = customerId;
     }
 
-    public int getDate() {
-        return date;
+    public LocalDateTime getOrderDate() {
+        return orderDate;
     }
 
-    public void setDate(int date) {
-        this.date = date;
+    public void setOrderDate(LocalDateTime orderDate) {
+        this.orderDate = orderDate;
     }
 
     public String getStatus() {
@@ -46,13 +54,5 @@ public class Order {
 
     public void setStatus(String status) {
         this.status = status;
-    }
-
-    public float getTotal_amount() {
-        return total_amount;
-    }
-
-    public void setTotal_amount(float total_amount) {
-        this.total_amount = total_amount;
     }
 }
