@@ -25,9 +25,12 @@ public class ProductService {
     private ProductResponse toResponse(Product product) {
         return new ProductResponse(
             product.getId(),
-            product.getName(),
+            product.getBrand(),
+            product.getModel(),
             product.getCategory(),
-            product.getPrice()
+            product.getPrice(),
+            product.getDescription(),
+            product.getStock()
         );
     }
 }
