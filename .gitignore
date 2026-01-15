@@ -43,7 +43,7 @@ node_modules/
 dist/
 
 # Local Spring Boot config
-src/main/resources/application.yaml
+application.yaml
 
 # dependencies
 /node_modules
