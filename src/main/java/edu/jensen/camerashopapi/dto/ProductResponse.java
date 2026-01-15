@@ -22,7 +22,7 @@ public class ProductResponse {
     }
 
     public int getId() { return id; }
-    public String getName() { return brand; }
+    public String getBrand() { return brand; }
     public String model() { return model; }
     public String getCategory() { return category; }
     public BigDecimal getPrice() { return price; }

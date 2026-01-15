@@ -1,7 +1,6 @@
 package edu.jensen.camerashopapi.controller;
 
 import edu.jensen.camerashopapi.dto.ProductResponse;
-import edu.jensen.camerashopapi.entity.Product;
 import edu.jensen.camerashopapi.service.ProductService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
