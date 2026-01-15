@@ -1,0 +1,14 @@
+spring:
+  application:
+    name: camerashopapi
+
+  datasource:
+    url: jdbc:mysql://<IP-ADDRESS>:3306/<DB_NAME>?serverTimezone=UTC
+    username: <DB_USER>
+    password: <DB_PASSWORD>
+    driver-class-name: org.mariadb.jdbc.Driver
+
+  jpa:
+    ddl-auto: update
+    database-platform: org.hibernate.dialect.MySQLDialect
+    show-sql: true
