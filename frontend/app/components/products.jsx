@@ -1,7 +1,7 @@
 import ProductCard from "./productcard";
 
 export default async function Products() {
-  const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/products``, {
+  const response = await fetch(`${process.env.BACKEND_API_URL}/products`, {
     cache: "no-store",
   });
   console.log(response);
