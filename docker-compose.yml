@@ -2,12 +2,14 @@ services:
   backend:
     build: ./backend
     container_name: camerashop-backend
+    restart: on-failure
     environment:
       SPRING_DATASOURCE_URL: jdbc:mariadb://${DB_HOST}:${DB_PORT}/${DB_NAME}
       SPRING_DATASOURCE_USERNAME: ${DB_USER}
       SPRING_DATASOURCE_PASSWORD: ${DB_PASSWORD}
     depends_on:
-      - mariadb
+      mariadb:
+        condition: service_healthy
     ports:
       - "8080:8080"
     networks: [appnet]
@@ -41,6 +43,11 @@ services:
     ports:
       - "${DB_PORT}:3306"
     networks: [appnet]
+    healthcheck:
+      test: ["CMD-SHELL", "mariadb-admin ping -h 127.0.0.1 -uroot -p$$MARIADB_ROOT_PASSWORD --silent"]
+      interval: 5s
+      timeout: 3s
+      retries: 30
 
   adminer:
     image: adminer:latest
