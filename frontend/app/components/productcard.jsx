@@ -4,7 +4,7 @@ import Image from "next/image";
 import { useEffect, useState } from "react";
 
 export default function ProductCard({ product }) {
-  const safeName = product?.name?.trim();
+  const safeName = product.name;
 
   const initialSrc = safeName
     ? `/product-images/${encodeURIComponent(safeName)}.jpg`
@@ -37,7 +37,7 @@ export default function ProductCard({ product }) {
         </div>
 
         <p className="text-gray-700 text-base">
-          Lorem ipsum dolor sit amet.
+          Good day
         </p>
       </div>
     </div>
