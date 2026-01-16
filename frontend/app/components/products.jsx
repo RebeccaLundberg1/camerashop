@@ -2,7 +2,7 @@ import ProductCard from "./productcard"
 
 export default async function Products(){
     
-    const response = await fetch("http://localhost:8080/products", {
+    const response = await fetch("http://backend:8080/products", {
         cache: "no-store"
     });
     console.log(response);

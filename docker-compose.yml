@@ -1,48 +1,24 @@
-version: "3.9"
-
 services:
-  # Springboot backend service
   backend:
-    image: maven:3.9.12
-    container_name: backend
-    working_dir: /app
-    volumes:
-      - ./backend:/app
-    command: ./mvnw spring-boot:run
-    restart: unless-stopped
-    depends_on:
-      - mariadb
+    build: ./backend
+    container_name: camerashop-backend
     environment:
-      IP_ADDRESS: mariadb
-      DB_USER: appuser
-      DB_PASSWORD: apppassword
+      SPRING_DATASOURCE_URL: jdbc:mariadb://${DB_HOST}:${DB_PORT}/${DB_NAME}
+      SPRING_DATASOURCE_USERNAME: ${DB_USER}
+      SPRING_DATASOURCE_PASSWORD: ${DB_PASSWORD}
     ports:
       - "8080:8080"
+    networks: [appnet]
 
-  # Mariadb database
-  mariadb:
-    image: mariadb:12
-    container_name: mariadb
-    restart: unless-stopped
+  frontend:
+    build: ./frontend
+    container_name: camerashop-frontend
     environment:
-      MARIADB_ROOT_PASSWORD: rootpassword
-      MARIADB_DATABASE: camerashopdb
-      MARIADB_USER: appuser
-      MARIADB_PASSWORD: apppassword
-    volumes:
-      - mariadb_data:/var/lib/mysql
+      NEXT_PUBLIC_API_URL: http://192.168.1.190:8080
     ports:
-      - "3306:3306"
+      - "3000:3000"
+    networks: [appnet]
 
-  # Adminer database client
-  adminer:
-    image: adminer:latest
-    container_name: adminer
-    restart: unless-stopped
-    depends_on:
-      - mariadb
-    ports:
-      - "8081:8080"
-
-volumes:
-  mariadb_data:
+networks:
+  appnet:
+    driver: bridge
