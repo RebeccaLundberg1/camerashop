@@ -2,6 +2,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import NavBar from "./components/NavBar";
 import CartButton from "@/app/components/CartButton";
+import Image from "next/image";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -19,12 +20,22 @@ export const metadata = {
 };
 
 export default function RootLayout({ children }) {
-  return (
+    return (
     <html lang="en">
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
+        <header className="w-full p-4 h-100 relative shadow-md bg-[#3F3F3F]">
+          <Image
+            src='/product-images/default.jpg'
+            alt="Header"
+            fill
+            className="object-cover"
+            priority
+          />
+        </header>
         <NavBar/>
+
         {children}
         <CartButton/>
       </body>
