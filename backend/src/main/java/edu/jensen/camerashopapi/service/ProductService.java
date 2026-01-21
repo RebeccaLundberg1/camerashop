@@ -29,7 +29,6 @@ public class ProductService {
             product.getModel(),
             product.getCategory(),
             product.getPrice(),
-            product.getDescription(),
             product.getStock()
         );
     }
