@@ -25,7 +25,7 @@ export default function RootLayout({ children }) {
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <header className="w-full p-4 h-100 relative shadow-md bg-gray-800">
+        <header className="w-full p-4 aspect-5/1 relative shadow-md bg-gray-800">
           <Image
             src='/product-images/default.jpg'
             alt="Header"
@@ -39,7 +39,7 @@ export default function RootLayout({ children }) {
           <aside className="w-64 bg-gray-800 text-white p-6">
             <NavBar />
           </aside>
-          <main className="flex-1 p-6 bg-gray-800">
+          <main className="flex-1 p-6 bg-gray-800 text-gray-950">
             {children}
           </main>
         </div>
