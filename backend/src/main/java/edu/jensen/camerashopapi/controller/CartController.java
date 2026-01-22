@@ -22,6 +22,9 @@ public class CartController {
         return null;
     }
 
-    // @GetMapping
+    @GetMapping("/{customerId}"})
+        public List<CartItemResponse> getItems() {
+            return CartService.getItemsForCustomer(customerId);
+    }
 
 }

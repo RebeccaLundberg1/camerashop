@@ -13,6 +13,13 @@ public class CartService {
     private final CustomerRepository customerRepo;
     private final ProductRepository productRepo;
 
+    public List<CartItemResponse> getItemsForCustomer(Long customerId) {
+        return itemRepo.findByCustomerId(customerId)
+                .stream()
+                .map(this::toResponse)
+                .toList
+    }
+
     public CartService(CartItemRepository itemRepo,
                        CustomerRepository customerRepo, ProductRepository productRepo) {
         this.itemRepo = itemRepo;
@@ -23,5 +30,17 @@ public class CartService {
     @Transactional
     public CartItem addItem(Integer customerId, int productId, int qty) {
         return null;
+    }
+
+
+    private CartItemResponse toResponse(CartItem cartItem) {
+        return new CartItemResponse(
+            product.getId(),
+            product.getBrand(),
+            product.getModel(),
+            product.getCategory(),
+            product.getPrice(),
+            cartItem.getQuantity()
+        )
     }
 }
