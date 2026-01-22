@@ -40,6 +40,7 @@ public class CartService {
             product.getModel(),
             product.getCategory(),
             product.getPrice(),
+            product.getPrice().multiply(BigDecimal.valueOf(cartItem.getQuantity())),
             cartItem.getQuantity()
         )
     }

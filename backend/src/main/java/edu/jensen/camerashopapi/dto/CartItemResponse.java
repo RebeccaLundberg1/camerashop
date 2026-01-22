@@ -7,15 +7,15 @@ public class CartItemResponse {
     private String brand;
     private String model;
     private String category;
-    private BigDecimal price;
+    private BigDecimal totalPrice;
     private int quantity;
 
-    public CartItemResponse(int productId, String brand, String model, String category, BigDecimal price, int quantity) {
+    public CartItemResponse(int productId, String brand, String model, String category, BigDecimal totalPrice, int quantity) {
         this.productId = productId;
         this.brand = brand;
         this.model = model;
         this.category = category;
-        this.price = price;
+        this.totalPrice = totalPrice;
         this.quantity = quantity;
     }
 
