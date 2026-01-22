@@ -1,12 +1,8 @@
 package edu.jensen.camerashopapi.repository;
 
 import edu.jensen.camerashopapi.entity.CartItem;
-import java.util.Optional;
-import java.util.List;
-import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.repository.CrudRepository;
 
-public interface CartItemRepository extends JpaRepository<CartItem, Long> {
-    Optional<CartItem> findByCustomer_IdAndProduct_Id(Long customerId, int productId);
-
-    List<CartItem> findByCustomer_Id(Long customerId);
+public interface CartItemRepository extends CrudRepository<CartItem, Integer> {
+    CartItem findByCustomerIdAndProductId(int customerId, int productId);
 }
