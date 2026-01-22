@@ -5,8 +5,6 @@ import edu.jensen.camerashopapi.entity.CartItem;
 import edu.jensen.camerashopapi.service.CartService;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @RestController
 @RequestMapping("/cart")
 public class CartController {
@@ -18,10 +16,8 @@ public class CartController {
     }
 
     @PostMapping
-        public CartItemResponse addItem(@RequestBody AddCartItemRequest req) {
-        return null;
+    public CartItem addItem(@RequestBody AddCartItemRequest req) {
+        return cartService.addItem(req.getCustomerId(), req.getProductId(), req.getQty());
     }
-
-    // @GetMapping
 
 }
