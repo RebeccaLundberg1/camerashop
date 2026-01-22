@@ -8,7 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class CartService {
 
-    private final CartRepository cartRepo;
+
     private final CartItemRepository itemRepo;
     private final CustomerRepository customerRepo;
     private final ProductRepository productRepo;

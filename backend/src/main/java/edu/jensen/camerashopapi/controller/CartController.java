@@ -1,7 +1,6 @@
 package edu.jensen.camerashopapi.controller;
 
 import edu.jensen.camerashopapi.dto.*;
-import edu.jensen.camerashopapi.entity.Cart;
 import edu.jensen.camerashopapi.entity.CartItem;
 import edu.jensen.camerashopapi.service.CartService;
 import org.springframework.web.bind.annotation.*;
