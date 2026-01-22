@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/cart")
+@RequestMapping("/cart")
 public class CartController {
 
     private final CartService cartService;
@@ -17,23 +17,11 @@ public class CartController {
         this.cartService = cartService;
     }
 
-    @PostMapping("/items")
-    public CartResponse addItem(@RequestBody AddCartItemRequest req) {
-        // Later, replace req.getCustomerId() with the authenticated user id
-        Cart cart = cartService.addItem(req.getCustomerId(), req.getProductId(), req.getQty());
-
-        List<CartItemResponse> items = cart.getItems().stream().map(this::toResponse).toList();
-        return new CartResponse(cart.getId(), cart.getCustomer().getId(), items);
+    @PostMapping
+        public CartItemResponse addItem(@RequestBody AddCartItemRequest req) {
+        return null;
     }
 
-    private CartItemResponse toResponse(CartItem item) {
-        var p = item.getProduct();
-        return new CartItemResponse(
-                p.getId(),
-                p.getBrand(),
-                p.getModel(),
-                p.getPrice(),
-                item.getQuantity()
-        );
-    }
+    // @GetMapping
+
 }
