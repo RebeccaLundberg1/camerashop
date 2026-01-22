@@ -1,20 +1,18 @@
 "use client";
 
-import Image from "next/image";
 import { useEffect, useState } from "react";
-import useCart from "../hooks/useCart";
+import { getOrCreateCartId, addToCartApi } from "@/lib/cartService";
 
 export default function ProductCard({ product }) {
     const safeName = product.id;
     const initialSrc = safeName
         ? `/product-images/${encodeURIComponent(product.category)}/${encodeURIComponent(safeName)}.jpg`
-        : "/product-images/camera.jpg";
+        : '/product-images/camera.jpg';
 
     const [imgSrc, setImgSrc] = useState(initialSrc);
     const [loading, setLoading] = useState(false);
     const [toast, setToast] = useState(null);
-
-    const { addToCart } = useCart();
+    const [qty, setQty] = useState(1);
 
     useEffect(() => {
         setImgSrc(initialSrc);
@@ -26,21 +24,25 @@ export default function ProductCard({ product }) {
         return () => clearTimeout(t);
     }, [toast]);
 
-    function handleAdd() {
+    async function handleAdd() {
         if (loading) return;
         setLoading(true);
 
         const item = {
-            id: product.id,
-            brand: product.brand,
-            model: product.model,
-            price: product.price,
-            imageId: product.image_id ?? product.imageId,
+            productId: product.id,
+            quantity: Number(qty) || 1,
         };
 
         try {
-            addToCart(item, 1); // optimistic
+            const cartId = getOrCreateCartId();
+            if (!cartId) throw new Error("Could not create cart id");
+
             setToast("Lagt i kundkorgen");
+
+            await addToCartApi({ cartId, productId: item.productId, quantity: item.quantity });
+
+            const prev = Number(localStorage.getItem("cart_count") || "0");
+            localStorage.setItem("cart_count", String(prev + item.quantity));
         } catch (err) {
             console.error("Add to cart error", err);
             setToast("Kunde inte lägga till");
@@ -50,41 +52,18 @@ export default function ProductCard({ product }) {
     }
 
     return (
-        <div className="w-full rounded overflow-hidden shadow-lg bg-white">
-            <div className="relative h-48 w-full">
-                <a href={`/${product.id}`}>
-                    <Image
-                        src={imgSrc}
-                        alt={safeName ?? "Product"}
-                        fill
-                        className="object-cover"
-                        unoptimized
-                        onError={() => setImgSrc("/product-images/camera.jpg")}
-                    />
-                </a>
+        <div className="product-card">
+            <a href={`/product/${product.id}`} className="product-link">
+                <img src={imgSrc} alt={product.name}/>
+                <h3>{product.name}</h3>
+            </a>
+
+            <div className="actions">
+                <input type="number" min="1" value={qty} onChange={(e) => setQty(Math.max(1, Number(e.target.value) || 1))}/>
+                <button onClick={handleAdd}>Köp</button>
             </div>
 
-            <div className="px-6 py-4">
-                <div className="font-bold text-xl mb-2">{product.brand}</div>
-                <p className="text-gray-700 text-base">{product.category}</p>
-
-                <div className="mt-4 flex items-center justify-between">
-                    <div className="text-lg font-semibold">{product.price ? `${product.price} kr` : ""}</div>
-                    <button
-                        onClick={handleAdd}
-                        disabled={loading}
-                        className="bg-blue-600 text-white px-3 py-1 rounded hover:bg-blue-700 disabled:opacity-50"
-                    >
-                        {loading ? "Lägger till..." : "Köp"}
-                    </button>
-                </div>
-
-                {toast && (
-                    <div className="mt-2 text-sm text-green-700">
-                        {toast}
-                    </div>
-                )}
-            </div>
+            {toast && <div className="mt-2 text-sm text-green-700">{toast}</div>}
         </div>
     );
-}
+};
