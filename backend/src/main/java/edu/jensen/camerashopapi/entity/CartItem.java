@@ -14,8 +14,8 @@ public class CartItem {
     private Long id;
 
     @ManyToOne(optional = false)
-    @JoinColumn(name = "cart_id", nullable = false)
-    private Cart cart;
+    @JoinColumn(name = "customer_id", nullable = false)
+    private Customer customer;
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "product_id", nullable = false)
