@@ -1,9 +1,12 @@
 package edu.jensen.camerashopapi.service;
 
+import edu.jensen.camerashopapi.dto.CartItemResponse;
 import edu.jensen.camerashopapi.entity.*;
 import edu.jensen.camerashopapi.repository.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import java.math.BigDecimal;
+import java.util.List;
 
 @Service
 public class CartService {
@@ -17,7 +20,7 @@ public class CartService {
         return itemRepo.findByCustomerId(customerId)
                 .stream()
                 .map(this::toResponse)
-                .toList
+                .toList();
     }
 
     public CartService(CartItemRepository itemRepo,
@@ -34,14 +37,15 @@ public class CartService {
 
 
     private CartItemResponse toResponse(CartItem cartItem) {
+        Product product = cartItem.getProduct();
+
         return new CartItemResponse(
             product.getId(),
             product.getBrand(),
             product.getModel(),
             product.getCategory(),
-            product.getPrice(),
             product.getPrice().multiply(BigDecimal.valueOf(cartItem.getQuantity())),
             cartItem.getQuantity()
-        )
+        );
     }
 }

@@ -23,6 +23,6 @@ public class CartItemResponse {
     public String getBrand() { return brand; }
     public String getModel() { return model; }
     public String getCategory() { return category; }
-    public BigDecimal getPrice() { return price; }
+    public BigDecimal getTotalPrice() { return totalPrice; }
     public int getQuantity() { return quantity; }
 }
