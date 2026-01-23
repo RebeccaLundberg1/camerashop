@@ -1,6 +1,5 @@
-// frontend/app/api/cart/route.js
 import { NextResponse } from "next/server";
-import getDb from "@/db.js";
+import getDb from "@/lib/db.js";
 
 export async function POST(req) {
     try {

@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useEffect, useState } from "react";
 import { getOrCreateCartId, addToCartApi } from "@/lib/cartService";
 
@@ -39,7 +40,7 @@ export default function ProductCard({ product }) {
 
             setToast("Lagt i kundkorgen");
 
-            await addToCartApi({ cartId, productId: item.productId, quantity: item.quantity });
+            await addToCartApi({cartId, productId: item.productId, quantity: item.quantity});
 
             const prev = Number(localStorage.getItem("cart_count") || "0");
             localStorage.setItem("cart_count", String(prev + item.quantity));
@@ -52,18 +53,42 @@ export default function ProductCard({ product }) {
     }
 
     return (
-        <div className="product-card">
-            <a href={`/product/${product.id}`} className="product-link">
-                <img src={imgSrc} alt={product.name}/>
-                <h3>{product.name}</h3>
-            </a>
-
-            <div className="actions">
-                <input type="number" min="1" value={qty} onChange={(e) => setQty(Math.max(1, Number(e.target.value) || 1))}/>
-                <button onClick={handleAdd}>Köp</button>
+        <div className="w-full rounded overflow-hidden shadow-lg bg-white">
+            {/* Image container */}
+            <div className="relative h-48 w-full">
+                <a href={`/${product.id}`}>
+                    <Image
+                        src={imgSrc}
+                        alt={safeName ?? 'Product'}
+                        fill
+                        className="object-cover"
+                        unoptimized
+                        onError={() => {
+                            setImgSrc("/product-images/camera.jpg");
+                        }}
+                    /></a>
             </div>
 
-            {toast && <div className="mt-2 text-sm text-green-700">{toast}</div>}
+            <div className="px-6 py-4">
+                <div className="font-bold text-xl mb-2">
+                    {product.brand}
+                </div>
+                <p className="text-gray-700 font-normal">
+                    {product.model}
+                </p>
+                <p className="text-gray-700 text-base">
+                    {product.price} SEK
+                </p>
+                <div className="actions">
+                    <input type="number" min="1" value={qty}
+                           onChange={(e) => setQty(Math.max(1, Number(e.target.value) || 1))}/>
+                    <button onClick={handleAdd}
+                            style={{backgroundColor: 'green', color: 'white', padding: '8px 16px'}}>Köp
+                    </button>
+                    {toast && <div className="mt-2 text-sm text-green-700">{toast}</div>}
+                </div>
+            </div>
         </div>
     );
-};
+}
+
