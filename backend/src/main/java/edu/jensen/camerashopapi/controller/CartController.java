@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Objects;
 
 @RestController
@@ -38,6 +39,11 @@ public class CartController {
         Long safeCartItemId = Objects.requireNonNull(cartItemId, "cartItemId");
         cartService.removeItemFromCart(safeCartItemId);
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/{customerId}")
+    public List<CartItemResponse> getItems(@PathVariable Long customerId) {
+        return cartService.getItemsForCustomer(customerId);
     }
 
 }

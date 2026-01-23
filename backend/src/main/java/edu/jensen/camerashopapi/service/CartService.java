@@ -12,6 +12,7 @@ import edu.jensen.camerashopapi.repository.CartItemRepository;
 import edu.jensen.camerashopapi.repository.CustomerRepository;
 import edu.jensen.camerashopapi.repository.ProductRepository;
 
+import java.util.List;
 import java.util.Objects;
 
 @Service
@@ -77,17 +78,22 @@ public class CartService {
         cartItemRepository.delete(cartItem);
     }
 
+    @Transactional(readOnly = true)
+    public List<CartItemResponse> getItemsForCustomer(@NonNull Long customerId) {
+        int id = Objects.requireNonNull(customerId, "customerId").intValue();
+        return cartItemRepository.findByCustomer_Id(id)
+                .stream()
+                .map(this::toResponse)
+                .toList();
+    }
+
     private CartItemResponse toResponse(CartItem cartItem) {
         Product product = cartItem.getProduct();
-
         return new CartItemResponse(
-            product.getId(),
-            product.getBrand(),
-            product.getModel(),
-            product.getCategory(),
-            product.getPrice().multiply(BigDecimal.valueOf(cartItem.getQuantity())),
-            cartItem.getQuantity()
-        );
+                product.getId(),
+                product.getCategory(),
+                product.getPrice(),
+                cartItem.getQuantity());
     }
 
     public BigDecimal totalPriceOfCart(Long customerId) {
