@@ -1,31 +1,40 @@
 package edu.jensen.camerashopapi.dto;
 
 public class AddCartItemRequest {
-    private int customerId; // temporary if no auth yet
-    private int productId;
-    private int qty;
+    private Long productId;
+    private Long customerId;
+    private Integer quantity;
 
-    public int getCustomerId() {
-        return customerId;
+    public AddCartItemRequest() {
     }
 
-    public void setCustomerId(int customerId) {
+    public AddCartItemRequest(Long productId, Long customerId, Integer quantity) {
+        this.productId = productId;
         this.customerId = customerId;
+        this.quantity = quantity;
     }
 
-    public int getProductId() {
+    public Long getProductId() {
         return productId;
     }
 
-    public void setProductId(int productId) {
+    public void setProductId(Long productId) {
         this.productId = productId;
     }
 
-    public int getQty() {
-        return qty;
+    public Long getCustomerId() {
+        return customerId;
     }
 
-    public void setQty(int qty) {
-        this.qty = qty;
+    public void setCustomerId(Long customerId) {
+        this.customerId = customerId;
+    }
+
+    public Integer getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(Integer quantity) {
+        this.quantity = quantity;
     }
 }
