@@ -1,20 +1,10 @@
 import CartItem from "@/app/cart/Item";
 
 export default async function CartPage({params}) {
-    //För test så sätts customerId till 1 då cookies inte är färdigt än.
     const resolvedParams = await params;
     const customerId = resolvedParams.customerId;
     const url = `${process.env.BACKEND_API_URL}/cart/${customerId}`;
-    console.log("Fetching URL:", url);
 
-    //Endast för test, hela stycket ska bort sen.
-    const mockitems = [
-        { id: 100101, category: "camera", brand: "Canon", model: "EOS R100", price: 4999, quantity: 1 },
-        { id: 100102, category: "camera", brand: "Nikon", model: "Z6 II", price: 6899, quantity: 1 },
-        { id: 100103, category: "camera", brand: "Sony", model: "A7 V", price: 3599, quantity: 1 },
-    ];
-
-    //För test använd mockitems, senare ändra till items = [];
     let items = [];
     let errorMessage = null;
 
