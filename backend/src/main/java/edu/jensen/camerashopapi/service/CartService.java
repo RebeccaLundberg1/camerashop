@@ -27,7 +27,8 @@ public class CartService {
     private CustomerRepository customerRepository;
 
     @Transactional
-    public CartItemResponse addItemToCart(@NonNull Long productId, @NonNull Long customerId, @NonNull Integer quantity) {
+    public CartItemResponse addItemToCart(@NonNull Long productId, @NonNull Long customerId,
+            @NonNull Integer quantity) {
         // Validera att produkt existerar - konvertera Long till int
         Product product = productRepository.findById(productId.intValue())
                 .orElseThrow(() -> new IllegalArgumentException("Produkt inte funnen"));
