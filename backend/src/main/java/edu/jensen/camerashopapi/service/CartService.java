@@ -26,7 +26,7 @@ public class CartService {
         Product product = productRepo.findById(productId)
                 .orElseThrow(() -> new RuntimeException("Product not found"));
 
-        CartItem existingItem = itemRepo.findByCustomerIdAndProductId(customerId, productId);
+        CartItem existingItem = itemRepo.findByCustomer_IdAndProduct_Id(customerId, productId);
         if (existingItem != null) {
             existingItem.setQuantity(existingItem.getQuantity() + qty);
             return itemRepo.save(existingItem);
