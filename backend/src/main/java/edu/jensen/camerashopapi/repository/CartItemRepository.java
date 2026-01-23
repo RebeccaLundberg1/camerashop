@@ -4,5 +4,5 @@ import edu.jensen.camerashopapi.entity.CartItem;
 import org.springframework.data.repository.CrudRepository;
 
 public interface CartItemRepository extends CrudRepository<CartItem, Integer> {
-    CartItem findByCustomerIdAndProductId(int customerId, int productId);
+    CartItem findByCustomer_IdAndProduct_Id(int customerId, int productId);
 }
