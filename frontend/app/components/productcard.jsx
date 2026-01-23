@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { useEffect, useState } from "react";
-import { getOrCreateCartId, addToCartApi } from "@/lib/cartService";
+//import { getOrCreateCartId, addToCartApi } from "@/lib/cartService";
 
 export default function ProductCard({ product }) {
     const safeName = product.id;
