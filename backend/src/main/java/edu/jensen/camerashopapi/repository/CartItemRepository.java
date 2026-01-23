@@ -1,8 +1,12 @@
 package edu.jensen.camerashopapi.repository;
 
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 import edu.jensen.camerashopapi.entity.CartItem;
-import org.springframework.data.repository.CrudRepository;
+import edu.jensen.camerashopapi.entity.Customer;
+import edu.jensen.camerashopapi.entity.Product;
 
-public interface CartItemRepository extends CrudRepository<CartItem, Integer> {
-    CartItem findByCustomer_IdAndProduct_Id(int customerId, int productId);
+@Repository
+public interface CartItemRepository extends JpaRepository<CartItem, Long> {
+    CartItem findByCustomerAndProduct(Customer customer, Product product);
 }

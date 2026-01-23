@@ -1,25 +1,61 @@
 package edu.jensen.camerashopapi.service;
 
-import edu.jensen.camerashopapi.dto.CartItemResponse;
-import edu.jensen.camerashopapi.entity.*;
-import edu.jensen.camerashopapi.repository.*;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import java.math.BigDecimal;
-import java.util.List;
+import edu.jensen.camerashopapi.dto.CartItemResponse;
+import edu.jensen.camerashopapi.entity.CartItem;
+import edu.jensen.camerashopapi.entity.Customer;
+import edu.jensen.camerashopapi.entity.Product;
+import edu.jensen.camerashopapi.repository.CartItemRepository;
+import edu.jensen.camerashopapi.repository.CustomerRepository;
+import edu.jensen.camerashopapi.repository.ProductRepository;
 
 @Service
 public class CartService {
 
-    private final CartItemRepository itemRepo;
-    private final CustomerRepository customerRepo;
-    private final ProductRepository productRepo;
+    @Autowired
+    private CartItemRepository cartItemRepository;
 
-    public CartService(CartItemRepository itemRepo,
-            CustomerRepository customerRepo, ProductRepository productRepo) {
-        this.itemRepo = itemRepo;
-        this.customerRepo = customerRepo;
-        this.productRepo = productRepo;
+    @Autowired
+    private ProductRepository productRepository;
+
+    @Autowired
+    private CustomerRepository customerRepository;
+
+    @Transactional
+    public CartItemResponse addItemToCart(Long productId, Long customerId, Integer quantity) {
+        // Validera att produkt existerar
+        Product product = productRepository.findById(productId)
+                .orElseThrow(() -> new IllegalArgumentException("Produkt inte funnen"));
+
+        // Validera att kund existerar
+        Customer customer = customerRepository.findById(customerId)
+                .orElseThrow(() -> new IllegalArgumentException("Kund inte funnen"));
+
+        // Kontrollera om produkten redan finns i kundvagnen - förhindra dubletter
+        CartItem existingItem = cartItemRepository.findByCustomerAndProduct(customer, product);
+
+        CartItem cartItem;
+        if (existingItem != null) {
+            // Uppdatera kvantitet istället för dublett
+            existingItem.setQuantity(existingItem.getQuantity() + quantity);
+            cartItem = cartItemRepository.save(existingItem);
+        } else {
+            // Skapa ny kundvagnspost
+            cartItem = new CartItem();
+            cartItem.setCustomer(customer);
+            cartItem.setProduct(product);
+            cartItem.setQuantity(quantity);
+            cartItem = cartItemRepository.save(cartItem);
+        }
+
+        return new CartItemResponse(
+                cartItem.getId(),
+                cartItem.getProduct().getId(),
+                cartItem.getProduct().getName(),
+                cartItem.getQuantity(),
+                cartItem.getProduct().getPrice());
     }
 
     public List<CartItemResponse> getItemsForCustomer(Long customerId) {
@@ -30,23 +66,10 @@ public class CartService {
     }
 
     @Transactional
-    public CartItem addItem(int customerId, int productId, int qty) {
-        Customer customer = customerRepo.findById(customerId)
-                .orElseThrow(() -> new RuntimeException("Customer not found"));
-        Product product = productRepo.findById(productId)
-                .orElseThrow(() -> new RuntimeException("Product not found"));
-
-        CartItem existingItem = itemRepo.findByCustomer_IdAndProduct_Id(customerId, productId);
-        if (existingItem != null) {
-            existingItem.setQuantity(existingItem.getQuantity() + qty);
-            return itemRepo.save(existingItem);
-        } else {
-            CartItem cartItem = new CartItem();
-            cartItem.setCustomer(customer);
-            cartItem.setProduct(product);
-            cartItem.setQuantity(qty);
-            return itemRepo.save(cartItem);
-        }
+    public void removeItemFromCart(Long cartItemId) {
+        CartItem cartItem = cartItemRepository.findById(cartItemId)
+                .orElseThrow(() -> new IllegalArgumentException("Kundvagnspost inte funnen"));
+        cartItemRepository.delete(cartItem);
     }
 
     private CartItemResponse toResponse(CartItem cartItem) {
