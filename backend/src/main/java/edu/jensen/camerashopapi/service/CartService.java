@@ -51,11 +51,10 @@ public class CartService {
         }
 
         return new CartItemResponse(
-                cartItem.getId(),
                 cartItem.getProduct().getId(),
-                cartItem.getProduct().getName(),
-                cartItem.getQuantity(),
-                cartItem.getProduct().getPrice());
+                cartItem.getProduct().getCategory(),
+                cartItem.getProduct().getPrice(),
+                cartItem.getQuantity());
     }
 
     @Transactional
