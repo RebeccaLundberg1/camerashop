@@ -17,7 +17,7 @@ public class CartService {
     private final ProductRepository productRepo;
 
     public List<CartItemResponse> getItemsForCustomer(Long customerId) {
-        return itemRepo.findByCustomerId(customerId)
+        return itemRepo.findByCustomer_Id(customerId)
                 .stream()
                 .map(this::toResponse)
                 .toList();
