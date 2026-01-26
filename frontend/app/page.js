@@ -2,7 +2,7 @@ import Products from "./components/products";
 
 export default function Home() {
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-zinc-50">
+    <div className="flex min-h-screen items-center justify-center bg-[#e3e9e9] font-sans dark:bg-[#e3e9e9]">
       <Products/>
     </div>
   );

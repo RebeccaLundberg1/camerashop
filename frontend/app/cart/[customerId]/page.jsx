@@ -35,7 +35,7 @@ export default async function CartPage({params}) {
     }
 
     return (
-        <div className="flex flex-col min-h-screen bg-zinc-50 font-sans dark:bg-zinc-50 p-6">
+        <div className="flex flex-col min-h-screen bg-[#e3e9e9] font-sans dark:bg-[#e3e9e9] p-6">
             <div className="max-w-7xl w-full mx-auto">
                 <h1 className="text-3xl font-bold mb-6">Kundkorg</h1>
                 <div className="flex-1 flex flex-col gap-6">
