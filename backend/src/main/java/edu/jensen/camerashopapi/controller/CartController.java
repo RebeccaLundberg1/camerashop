@@ -43,7 +43,8 @@ public class CartController {
 
     @GetMapping("/{customerId}")
     public List<CartItemResponse> getItems(@PathVariable Long customerId) {
-        return cartService.getItemsForCustomer(customerId);
+        Long safeCustomerId = Objects.requireNonNull(customerId, "customerId");
+        return cartService.getItemsForCustomer(safeCustomerId);
     }
 
 }
