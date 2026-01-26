@@ -1,0 +1,26 @@
+services:
+  backend:
+    image: ghcr.io/rebeccalundberg1/camerashop/backend:latest
+    container_name: camerashop-backend
+    restart: on-failure
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mariadb://${DB_HOST}:${DB_PORT}/${DB_NAME}
+      SPRING_DATASOURCE_USERNAME: ${DB_USER}
+      SPRING_DATASOURCE_PASSWORD: ${DB_PASSWORD}
+    ports:
+      - "8080:8080"
+    networks: [appnet]
+
+  frontend:
+    image: ghcr.io/rebeccalundberg1/camerashop/frontend:latest
+    container_name: camerashop-frontend
+    restart: unless-stopped
+    environment:
+      BACKEND_API_URL: http://${API_URL}:8080
+    ports:
+      - "3000:3000"
+    networks: [appnet]
+
+networks:
+  appnet:
+    driver: bridge
