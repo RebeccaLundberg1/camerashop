@@ -1,8 +1,11 @@
 package edu.jensen.camerashopapi.controller;
 
 import edu.jensen.camerashopapi.dto.*;
+import edu.jensen.camerashopapi.entity.CartItem;
 import edu.jensen.camerashopapi.service.CartService;
 import org.springframework.web.bind.annotation.*;
+
+import java.math.BigDecimal;
 import java.util.List;
 
 @RestController
@@ -21,7 +24,9 @@ public class CartController {
     }
 
     @GetMapping("/{customerId}")
-        public List<CartItemResponse> getItems(@PathVariable Long customerId) {
-        return cartService.getItemsForCustomer(customerId);
+    public CartResponse getItems(@PathVariable Long customerId) {
+        List<CartItemResponse> items = cartService.getItemsForCustomer(customerId);
+        BigDecimal totalPrice = cartService.totalPriceOfCart(customerId);
+        return new CartResponse(items, totalPrice);
     }
 }
