@@ -4,7 +4,7 @@ import Image from "next/image";
 import {useEffect, useState} from "react";
 
 export default function CartItem({ item }) {
-    const safeName = item.id;
+    const safeName = item.productId;
 
     const initialSrc = safeName
         ? `/product-images/${encodeURIComponent(item.category)}/${encodeURIComponent(safeName)}.jpg`
@@ -35,7 +35,12 @@ export default function CartItem({ item }) {
                     {item.brand} {item.model}
                 </h2>
                 <p className="text-xl font-normal">
-                    {item.price} SEK
+                    {item.totalPrice} SEK
+                </p>
+            </div>
+            <div className="flex flex-col justify-center gap-1 w-50">
+                <p className="text-xl font-normal">
+                    {item.quantity} ST
                 </p>
             </div>
         </div>

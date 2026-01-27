@@ -12,14 +12,15 @@ import java.util.List;
 @RequestMapping("/products")
 public class ProductController {
 
-    private final ProductService productService;
+  private final ProductService productService;
 
-    public ProductController(ProductService productService) {
-        this.productService = productService;
-    }
+  public ProductController(ProductService productService) {
+    this.productService = productService;
+  }
 
-    @GetMapping
-    public List<ProductResponse> getProducts() {
-        return productService.getAllProducts();
-    }
+  @GetMapping
+  public List<ProductResponse> getProducts() {
+    System.out.println("Fetched products");
+    return productService.getAllProducts();
+  }
 }
