@@ -1,4 +1,5 @@
 import CartItem from "@/app/cart/Item";
+import OrderButton from "@/app/cart/OrderButton";
 
 export default async function CartPage({params}) {
     const resolvedParams = await params;
@@ -51,6 +52,7 @@ export default async function CartPage({params}) {
                     <h2 className="text-2xl font-bold">
                         Totalt pris: {totalPrice} SEK
                     </h2>
+                    <OrderButton/>
                 </div>
             </div>
         </div>
