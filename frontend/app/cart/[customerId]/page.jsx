@@ -6,6 +6,7 @@ export default async function CartPage({params}) {
     const url = `${process.env.BACKEND_API_URL}/cart/${customerId}`;
 
     let items = [];
+    let totalPrice = 0;
     let errorMessage = null;
 
     try {
@@ -15,7 +16,8 @@ export default async function CartPage({params}) {
             errorMessage = `Products API failed: ${response.status} ${response.statusText}`;
         } else {
             const data = await response.json();
-            items = Array.isArray(data) ? data : [];
+            items = Array.isArray(data.items) ? data.items : [];
+            totalPrice = data.totalPrice ?? 0;
         }
     } catch (err) {
         errorMessage = "Service is currently unreachable.";
@@ -46,10 +48,10 @@ export default async function CartPage({params}) {
                             <CartItem key={item.productId} item={item} />
                         ))
                     )}
+                    <h2 className="text-2xl font-bold">
+                        Totalt pris: {totalPrice} SEK
+                    </h2>
                 </div>
-                <p className="mt-6">
-                    Här under kommer sedan totalt pris, knapp för lägg order etc.
-                </p>
             </div>
         </div>
     );

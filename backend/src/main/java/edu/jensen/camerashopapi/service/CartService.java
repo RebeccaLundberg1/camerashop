@@ -16,13 +16,6 @@ public class CartService {
     private final CustomerRepository customerRepo;
     private final ProductRepository productRepo;
 
-    public List<CartItemResponse> getItemsForCustomer(Long customerId) {
-        return itemRepo.findByCustomer_Id(customerId)
-                .stream()
-                .map(this::toResponse)
-                .toList();
-    }
-
     public CartService(CartItemRepository itemRepo,
                        CustomerRepository customerRepo, ProductRepository productRepo) {
         this.itemRepo = itemRepo;
@@ -30,11 +23,17 @@ public class CartService {
         this.productRepo = productRepo;
     }
 
+    public List<CartItemResponse> getItemsForCustomer(Long customerId) {
+        return itemRepo.findByCustomer_Id(customerId)
+                .stream()
+                .map(this::toResponse)
+                .toList();
+    }
+
     @Transactional
     public CartItem addItem(Integer customerId, int productId, int qty) {
         return null;
     }
-
 
     private CartItemResponse toResponse(CartItem cartItem) {
         Product product = cartItem.getProduct();
@@ -47,5 +46,12 @@ public class CartService {
             product.getPrice().multiply(BigDecimal.valueOf(cartItem.getQuantity())),
             cartItem.getQuantity()
         );
+    }
+
+    public BigDecimal totalPriceOfCart(Long customerId) {
+        return itemRepo.findByCustomer_Id(customerId)
+                .stream()
+                .map(item -> item.getProduct().getPrice().multiply(BigDecimal.valueOf(item.getQuantity())))
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 }
