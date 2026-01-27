@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { useEffect, useState } from "react";
+import BuyButton from "./BuyButton";
 
 export default function ProductCard({ product }) {
   const safeName = product.id;
@@ -10,7 +11,6 @@ export default function ProductCard({ product }) {
     : "/product-images/camera.jpg";
 
   const [imgSrc, setImgSrc] = useState(initialSrc);
-  const [loading, setLoading] = useState(false);
   const [toast, setToast] = useState(null);
   const [qty, setQty] = useState(1);
 
@@ -24,28 +24,7 @@ export default function ProductCard({ product }) {
     return () => clearTimeout(t);
   }, [toast]);
 
-  async function handleAdd() {
-    if (loading) return;
-    setLoading(true);
-
-    const item = {
-      productId: product.id,
-      quantity: Number(qty) || 1,
-    };
-
-    try {
-      const customerId = 1; // TODO: replace with util function to get customerId cookie
-      if (!customerId) throw new Error("Could not get customerId");
-
-      // TODO: Call backend add to cart post endpoint
-      setToast("Lagt i kundkorgen");
-    } catch (err) {
-      console.error("Add to cart error", err);
-      setToast("Kunde inte lägga till");
-    } finally {
-      setLoading(false);
-    }
-  }
+  const customerId = 1; // TODO: replace with util function to get customerId
 
   return (
     <div className="w-full rounded overflow-hidden shadow-lg bg-white">
@@ -76,16 +55,13 @@ export default function ProductCard({ product }) {
             value={qty}
             onChange={(e) => setQty(Math.max(1, Number(e.target.value) || 1))}
           />
-          <button
-            onClick={handleAdd}
-            style={{
-              backgroundColor: "green",
-              color: "white",
-              padding: "8px 16px",
-            }}
-          >
-            Köp
-          </button>
+          <BuyButton
+            productId={product.id}
+            quantity={Number(qty) || 1}
+            customerId={customerId}
+            onSuccess={() => setToast("Lagt i kundkorgen")}
+            onError={() => setToast("Kunde inte lägga till")}
+          />
           {toast && <div className="mt-2 text-sm text-green-700">{toast}</div>}
         </div>
       </div>
