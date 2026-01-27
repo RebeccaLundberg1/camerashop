@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { useEffect, useState } from "react";
+//import {addToCartApi} from "@/app/lib/cartService";
 //import { getOrCreateCartId, addToCartApi } from "@/lib/cartService";
 
 export default function ProductCard({ product }) {
@@ -35,12 +36,12 @@ export default function ProductCard({ product }) {
         };
 
         try {
-            const cartId = getOrCreateCartId();
-            if (!cartId) throw new Error("Could not create cart id");
+            const customerId = getOrCreateCartId();
+            if (!customerId) throw new Error("Could not create cart id");
 
             setToast("Lagt i kundkorgen");
 
-            await addToCartApi({cartId, productId: item.productId, quantity: item.quantity});
+            await addToCartApi({customerId, productId: item.productId, quantity: item.quantity});
 
             const prev = Number(localStorage.getItem("cart_count") || "0");
             localStorage.setItem("cart_count", String(prev + item.quantity));

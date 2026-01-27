@@ -20,6 +20,7 @@ export default function BuyButton({ productId, label = "Köp" }) {
         }
     }
 
+
     return (
         <button onClick={handleClick} disabled={adding || loading} className={`ml-4 px-3 py-1 rounded text-white ${adding ? "bg-gray-400" : "bg-blue-600 hover:bg-blue-700"}`}>
             {adding ? "Lägger till..." : label}
