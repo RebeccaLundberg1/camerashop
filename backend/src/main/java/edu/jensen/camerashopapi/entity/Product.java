@@ -50,10 +50,6 @@ public class Product {
         this.model = model;
     }
 
-    public String getName() {
-        return this.brand + " " + this.model;
-    }
-
     public String getCategory() {
         return category;
     }
