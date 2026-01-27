@@ -12,6 +12,7 @@ import edu.jensen.camerashopapi.repository.CartItemRepository;
 import edu.jensen.camerashopapi.repository.CustomerRepository;
 import edu.jensen.camerashopapi.repository.ProductRepository;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Objects;
 
@@ -39,7 +40,7 @@ public class CartService {
                                 .orElseThrow(() -> new IllegalArgumentException("Kund inte funnen"));
 
                 // Kontrollera om produkten redan finns i kundvagnen - förhindra dubletter
-                CartItem existingItem = cartItemRepository.findByCustomerAndProduct(customer, product);
+                CartItem existingItem = cartItemRepository.findByCustomer_IdAndProduct_Id(customerId, product.getId());
 
                 CartItem cartItem;
                 if (existingItem != null) {
@@ -55,10 +56,16 @@ public class CartService {
                         cartItem = cartItemRepository.save(cartItem);
                 }
 
+                Product itemProduct = cartItem.getProduct();
+                BigDecimal totalPrice = itemProduct.getPrice()
+                                .multiply(BigDecimal.valueOf(cartItem.getQuantity()));
                 return new CartItemResponse(
-                                cartItem.getProduct().getId(),
-                                cartItem.getProduct().getCategory(),
-                                cartItem.getProduct().getPrice(),
+                                cartItem.getId(),
+                                itemProduct.getId(),
+                                itemProduct.getBrand(),
+                                itemProduct.getModel(),
+                                itemProduct.getCategory(),
+                                totalPrice,
                                 cartItem.getQuantity());
         }
 
@@ -69,6 +76,17 @@ public class CartService {
                                                 .orElseThrow(() -> new IllegalArgumentException(
                                                                 "Kundvagnspost inte funnen")),
                                 "cartItem");
+                cartItemRepository.delete(cartItem);
+        }
+
+        @Transactional
+        public void removeItemFromCartByCustomerAndProduct(@NonNull Long customerId, @NonNull Long productId) {
+                CartItem cartItem = cartItemRepository.findByCustomer_IdAndProduct_Id(
+                                customerId,
+                                productId.intValue());
+                if (cartItem == null) {
+                        throw new IllegalArgumentException("Kundvagnspost inte funnen");
+                }
                 cartItemRepository.delete(cartItem);
         }
 
@@ -83,10 +101,15 @@ public class CartService {
 
         private CartItemResponse toResponse(CartItem cartItem) {
                 Product product = cartItem.getProduct();
+                BigDecimal totalPrice = product.getPrice()
+                                .multiply(BigDecimal.valueOf(cartItem.getQuantity()));
                 return new CartItemResponse(
+                                cartItem.getId(),
                                 product.getId(),
+                                product.getBrand(),
+                                product.getModel(),
                                 product.getCategory(),
-                                product.getPrice(),
+                                totalPrice,
                                 cartItem.getQuantity());
         }
 }

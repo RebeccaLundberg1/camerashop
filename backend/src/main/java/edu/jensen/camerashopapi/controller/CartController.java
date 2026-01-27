@@ -1,7 +1,6 @@
 package edu.jensen.camerashopapi.controller;
 
 import edu.jensen.camerashopapi.dto.*;
-import edu.jensen.camerashopapi.entity.CartItem;
 import edu.jensen.camerashopapi.service.CartService;
 
 import jakarta.validation.Valid;
@@ -38,6 +37,15 @@ public class CartController {
     public ResponseEntity<Void> removeFromCart(@PathVariable Long cartItemId) {
         Long safeCartItemId = Objects.requireNonNull(cartItemId, "cartItemId");
         cartService.removeItemFromCart(safeCartItemId);
+        return ResponseEntity.noContent().build();
+    }
+
+    @DeleteMapping("/customer/{customerId}/product/{productId}")
+    public ResponseEntity<Void> removeFromCartByCustomerAndProduct(@PathVariable Long customerId,
+            @PathVariable Long productId) {
+        Long safeCustomerId = Objects.requireNonNull(customerId, "customerId");
+        Long safeProductId = Objects.requireNonNull(productId, "productId");
+        cartService.removeItemFromCartByCustomerAndProduct(safeCustomerId, safeProductId);
         return ResponseEntity.noContent().build();
     }
 
