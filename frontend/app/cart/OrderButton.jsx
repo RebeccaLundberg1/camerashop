@@ -1,11 +1,7 @@
-import Link from "next/link";
-
-export default function OrderButton() {
+export default function OrderButton({className, ...props}) {
     return (
-        //<Link href="/cart">
-            <button className="p-4 bg-blue-500 text-white px-4 py-2 rounded shadow-lg">
-                Lägg order
-            </button>
-        //</Link>
+        <button {...props} className={`py-2 px-8 bg-blue-500 text-white rounded shadow-lg ${className}`}>
+            Lägg order
+        </button>
     );
 }
