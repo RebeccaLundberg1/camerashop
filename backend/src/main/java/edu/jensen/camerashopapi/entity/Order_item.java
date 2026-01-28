@@ -17,10 +17,10 @@ public class Order_item {
     private int id;
 
     @Column(name = "order_id")
-    private int orderId;
+    private Integer orderId;
 
     @Column(name = "product_id")
-    private int productId;
+    private Integer productId;
 
     private int quantity;
 
@@ -30,11 +30,11 @@ public class Order_item {
     public int getId() { return id; }
     public void setId(int id) { this.id = id; }
 
-    public int getOrderId() { return orderId; }
-    public void setOrderId(int orderId) { this.orderId = orderId; }
+    public Integer getOrderId() { return orderId; }
+    public void setOrderId(Integer orderId) { this.orderId = orderId; }
 
-    public int getProductId() { return productId; }
-    public void setProductId(int productId) { this.productId = productId; }
+    public Integer getProductId() { return productId; }
+    public void setProductId(Integer productId) { this.productId = productId; }
 
     public int getQuantity() { return quantity; }
     public void setQuantity(int quantity) { this.quantity = quantity; }
