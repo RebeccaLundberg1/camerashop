@@ -13,12 +13,24 @@ services:
     ports:
       - "8080:8080"
     networks: [appnet]
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "wget -qO- http://127.0.0.1:8080/products >/dev/null 2>&1",
+        ]
+      interval: 5s
+      timeout: 3s
+      retries: 30
 
   frontend:
     build:
       context: ./frontend
       target: dev
     container_name: camerashop-frontend
+    depends_on:
+      backend:
+        condition: service_healthy
     environment:
       BACKEND_API_URL: http://${API_URL}:8080
       WATCHPACK_POLLING: "true"
