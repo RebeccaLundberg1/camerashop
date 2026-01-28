@@ -52,6 +52,7 @@ export default function ProductCard({ product }) {
           <input
             type="number"
             min="1"
+            className="w-20"
             value={qty}
             onChange={(e) => setQty(Math.max(1, Number(e.target.value) || 1))}
           />

@@ -17,6 +17,18 @@ export default function BuyButton({
     setAdding(true);
     try {
       // TODO: Call backend POST /cart with { productId, quantity, customerId }
+      const response = await fetch(url, {
+        method: "POST",
+        cache: "no-store",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          customerId: customerId,
+          productId: productId,
+          quantity: quantity
+        })
+      });
       // Example payload: { productId, quantity, customerId }
       if (onSuccess) onSuccess();
     } catch (e) {
