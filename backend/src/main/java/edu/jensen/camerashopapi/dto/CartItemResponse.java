@@ -3,6 +3,7 @@ package edu.jensen.camerashopapi.dto;
 import java.math.BigDecimal;
 
 public class CartItemResponse {
+    private long cartItemId;
     private int productId;
     private String brand;
     private String model;
@@ -10,7 +11,8 @@ public class CartItemResponse {
     private BigDecimal totalPrice;
     private int quantity;
 
-    public CartItemResponse(int productId, String brand, String model, String category, BigDecimal totalPrice, int quantity) {
+    public CartItemResponse(long cartItemId, int productId, String brand, String model, String category, BigDecimal totalPrice, int quantity) {
+        this.cartItemId = cartItemId;
         this.productId = productId;
         this.brand = brand;
         this.model = model;
@@ -19,6 +21,7 @@ public class CartItemResponse {
         this.quantity = quantity;
     }
 
+    public long getCartItemId() { return cartItemId; }
     public int getProductId() { return productId; }
     public String getBrand() { return brand; }
     public String getModel() { return model; }

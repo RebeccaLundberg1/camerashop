@@ -2,26 +2,62 @@ package edu.jensen.camerashopapi.controller;
 
 import edu.jensen.camerashopapi.dto.*;
 import edu.jensen.camerashopapi.service.CartService;
+
+import jakarta.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.math.BigDecimal;
 import java.util.List;
+import java.util.Objects;
 
 @RestController
-@RequestMapping("/cart")
+@RequestMapping("/api/cart")
+@CrossOrigin(origins = "http://localhost:3000")
 public class CartController {
 
-    private final CartService cartService;
+    @Autowired
+    private CartService cartService;
 
-    public CartController(CartService cartService) {
-        this.cartService = cartService;
+    @PostMapping("/add")
+    public ResponseEntity<CartItemResponse> addCart(@Valid @RequestBody AddCartItemRequest request) {
+        Long productId = Objects.requireNonNull(request.getProductId(), "productId");
+        Long customerId = Objects.requireNonNull(request.getCustomerId(), "customerId");
+        Integer quantity = Objects.requireNonNull(request.getQuantity(), "quantity");
+
+        CartItemResponse response = cartService.addItemToCart(
+                productId,
+                customerId,
+                quantity);
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
-    @PostMapping
-        public CartItemResponse addItem(@RequestBody AddCartItemRequest req) {
-        return null;
+    @DeleteMapping("/{cartItemId}")
+    public ResponseEntity<Void> removeFromCart(@PathVariable Long cartItemId) {
+        Long safeCartItemId = Objects.requireNonNull(cartItemId, "cartItemId");
+        cartService.removeItemFromCart(safeCartItemId);
+        return ResponseEntity.noContent().build();
+    }
+
+    @DeleteMapping("/customer/{customerId}/product/{productId}")
+    public ResponseEntity<Void> removeFromCartByCustomerAndProduct(@PathVariable Long customerId,
+            @PathVariable Long productId) {
+        Long safeCustomerId = Objects.requireNonNull(customerId, "customerId");
+        Long safeProductId = Objects.requireNonNull(productId, "productId");
+        cartService.removeItemFromCartByCustomerAndProduct(safeCustomerId, safeProductId);
+        return ResponseEntity.noContent().build();
     }
 
     @GetMapping("/{customerId}")
-        public List<CartItemResponse> getItems(@PathVariable Long customerId) {
-        return cartService.getItemsForCustomer(customerId);
+    public CartResponse getItems(@PathVariable Long customerId) {
+        Long safeCustomerId = Objects.requireNonNull(customerId, "customerId");
+        List<CartItemResponse> items = cartService.getItemsForCustomer(safeCustomerId);
+        BigDecimal totalPrice = items.stream()
+                .map(CartItemResponse::getTotalPrice)
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+        return new CartResponse(items, totalPrice);
     }
+
 }
