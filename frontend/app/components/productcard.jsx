@@ -4,6 +4,10 @@ import Image from "next/image";
 import { useEffect, useState } from "react";
 import BuyButton from "./BuyButton";
 
+import { getCookie } from "../utils/cookies";
+
+const CUSTOMER_COOKIE = "customerId";
+
 export default function ProductCard({ product }) {
   const safeName = product.id;
   const initialSrc = safeName
@@ -24,7 +28,7 @@ export default function ProductCard({ product }) {
     return () => clearTimeout(t);
   }, [toast]);
 
-  const customerId = 1; // TODO: replace with util function to get customerId
+  const customerId = getCookie(CUSTOMER_COOKIE) ?? 1;
 
   return (
     <div className="w-full rounded overflow-hidden shadow-lg bg-white">

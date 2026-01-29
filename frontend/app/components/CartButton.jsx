@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { getCookie } from "../utils/cookies";
 
 const CUSTOMER_COOKIE = "customerId";
 
@@ -9,10 +10,7 @@ export default function CartButton({itemCount=0}) {
     const [href, setHref] = useState("/cart");
 
     useEffect(() => {
-        const match = document.cookie
-            .split("; ")
-            .find((row) => row.startsWith(`${CUSTOMER_COOKIE}=`));
-        const value = match?.split("=")[1];
+        const value = getCookie(CUSTOMER_COOKIE);
         if (value) {
             setHref(`/cart/${value}`);
         }
