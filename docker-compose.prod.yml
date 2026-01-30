@@ -2,7 +2,7 @@ services:
   backend:
     image: ghcr.io/rebeccalundberg1/camerashop/backend:latest
     container_name: camerashop-backend
-    restart: on-failure
+    restart: unless-stopped
     environment:
       SPRING_DATASOURCE_URL: jdbc:mariadb://${DB_HOST}:${DB_PORT}/${DB_NAME}
       SPRING_DATASOURCE_USERNAME: ${DB_USER}

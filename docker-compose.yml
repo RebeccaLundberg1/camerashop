@@ -2,7 +2,7 @@ services:
   backend:
     build: ./backend
     container_name: camerashop-backend
-    restart: on-failure
+    restart: unless-stopped
     environment:
       SPRING_DATASOURCE_URL: jdbc:mariadb://${DB_HOST}:${DB_PORT}/${DB_NAME}
       SPRING_DATASOURCE_USERNAME: ${DB_USER}
@@ -17,7 +17,7 @@ services:
       test:
         [
           "CMD-SHELL",
-          "wget -qO- http://127.0.0.1:8080/products >/dev/null 2>&1",
+          "wget -qO- http://127.0.0.1:8080/api/products >/dev/null 2>&1",
         ]
       interval: 5s
       timeout: 3s
@@ -28,6 +28,7 @@ services:
       context: ./frontend
       target: dev
     container_name: camerashop-frontend
+    restart: unless-stopped
     depends_on:
       backend:
         condition: service_healthy
