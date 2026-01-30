@@ -1,24 +1,26 @@
 import { NextResponse } from "next/server";
 
-export async function GET(request, { params }) {
+export async function GET(request, { params } = {}) {
   const backendUrl = process.env.BACKEND_API_URL;
   if (!backendUrl) {
     return NextResponse.json(
       { error: "Backend URL not configured." },
-      { status: 500 }
+      { status: 500 },
     );
   }
 
-  const customerId = params?.customerId;
+  const pathname = request?.nextUrl?.pathname ?? new URL(request.url).pathname;
+  const segments = pathname.split("/").filter(Boolean);
+  const cartIndex = segments.lastIndexOf("cart");
+  const customerIdFromPath =
+    cartIndex >= 0 ? segments[cartIndex + 1] : undefined;
+  const customerId = params?.customerId ?? customerIdFromPath;
   if (!customerId) {
-    return NextResponse.json(
-      { error: "Missing customerId." },
-      { status: 400 }
-    );
+    return NextResponse.json({ error: "Missing customerId." }, { status: 400 });
   }
 
   try {
-    const response = await fetch(`${backendUrl}/cart/${customerId}`, {
+    const response = await fetch(`${backendUrl}/api/cart/${customerId}`, {
       cache: "no-store",
     });
 
@@ -30,7 +32,7 @@ export async function GET(request, { params }) {
     if (!response.ok) {
       return NextResponse.json(
         { error: "Backend request failed.", details: data },
-        { status: response.status }
+        { status: response.status },
       );
     }
 
@@ -38,7 +40,7 @@ export async function GET(request, { params }) {
   } catch (error) {
     return NextResponse.json(
       { error: "Failed to reach backend." },
-      { status: 502 }
+      { status: 502 },
     );
   }
 }

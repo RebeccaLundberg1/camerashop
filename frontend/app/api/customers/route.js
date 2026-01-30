@@ -5,12 +5,12 @@ export async function POST() {
   if (!backendUrl) {
     return NextResponse.json(
       { error: "Backend URL not configured." },
-      { status: 500 }
+      { status: 500 },
     );
   }
 
   try {
-    const response = await fetch(`${backendUrl}/customers`, {
+    const response = await fetch(`${backendUrl}/api/customers`, {
       method: "POST",
       cache: "no-store",
     });
@@ -23,7 +23,7 @@ export async function POST() {
     if (!response.ok) {
       return NextResponse.json(
         { error: "Backend request failed.", details: data },
-        { status: response.status }
+        { status: response.status },
       );
     }
 
@@ -31,7 +31,7 @@ export async function POST() {
   } catch (error) {
     return NextResponse.json(
       { error: "Failed to reach backend." },
-      { status: 502 }
+      { status: 502 },
     );
   }
 }
