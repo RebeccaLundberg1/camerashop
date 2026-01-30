@@ -58,7 +58,9 @@ export default async function CartPage({params}) {
                         <h2 className="p-4 text-2xl font-bold">
                             Totalt pris: {totalPrice} SEK
                         </h2>
-                        <OrderButton className="m-4"/>
+                        <OrderButton
+                            customerId = {customerId}
+                            className="m-4"/>
                     </div>
                 </div>
             </div>
