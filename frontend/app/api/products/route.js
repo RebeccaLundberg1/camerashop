@@ -5,12 +5,12 @@ export async function GET() {
   if (!backendUrl) {
     return NextResponse.json(
       { error: "Backend URL not configured." },
-      { status: 500 }
+      { status: 500 },
     );
   }
 
   try {
-    const response = await fetch(`${backendUrl}/products`, {
+    const response = await fetch(`${backendUrl}/api/products`, {
       cache: "no-store",
     });
 
@@ -22,7 +22,7 @@ export async function GET() {
     if (!response.ok) {
       return NextResponse.json(
         { error: "Backend request failed.", details: data },
-        { status: response.status }
+        { status: response.status },
       );
     }
 
@@ -30,7 +30,7 @@ export async function GET() {
   } catch (error) {
     return NextResponse.json(
       { error: "Failed to reach backend." },
-      { status: 502 }
+      { status: 502 },
     );
   }
 }
