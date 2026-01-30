@@ -1,16 +1,21 @@
 import CartItem from "@/app/cart/Item";
 import OrderButton from "@/app/cart/OrderButton";
+import { getServerBaseUrl } from "@/app/utils/serverBaseUrl";
 
 export default async function CartPage({params}) {
     const resolvedParams = await params;
     const customerId = resolvedParams.customerId;
-    const url = `${process.env.BACKEND_API_URL}/cart/${customerId}`;
+    const baseUrl = await getServerBaseUrl();
+    const url = baseUrl ? `${baseUrl}/api/cart/${customerId}` : null;
 
     let items = [];
     let totalPrice = 0;
     let errorMessage = null;
 
     try {
+        if (!url) {
+            throw new Error("Missing server base URL");
+        }
         const response = await fetch(url, {cache: "no-store" });
 
         if(!response.ok) {

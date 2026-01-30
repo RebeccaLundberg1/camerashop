@@ -13,7 +13,10 @@ export default async function proxy(request) {
   }
 
   try {
-    const response = await fetch(`${backendUrl}/customers`, { method: "POST" });
+    const response = await fetch(`${request.nextUrl.origin}/api/customers`, {
+      method: "POST",
+      cache: "no-store",
+    });
     if (!response.ok) {
       return NextResponse.next();
     }

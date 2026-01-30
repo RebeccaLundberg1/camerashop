@@ -1,12 +1,17 @@
 import ProductCard from "./productcard";
+import { getServerBaseUrl } from "@/app/utils/serverBaseUrl";
 
 export default async function Products() {
-  const url = `${process.env.BACKEND_API_URL}/products`;
+  const baseUrl = await getServerBaseUrl();
+  const url = baseUrl ? `${baseUrl}/api/products` : null;
 
   let products = [];
   let errorMessage = null;
 
   try {
+    if (!url) {
+      throw new Error("Missing server base URL");
+    }
     const response = await fetch(url, { cache: "no-store" });
 
     if (!response.ok) {
