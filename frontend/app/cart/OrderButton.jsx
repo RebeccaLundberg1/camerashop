@@ -1,11 +1,13 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 
 export default function OrderButton({ customerId, className }) {
   const [adding, setAdding] = useState(false);
   const [orderNumber, setOrderNumber] = useState(null);
   const [showModal, setShowModal] = useState(false);
+  const router = useRouter();
 
   async function handleClick() {
     if (!customerId) return;
@@ -24,6 +26,7 @@ export default function OrderButton({ customerId, className }) {
       const data = await response.json();
       setOrderNumber(data.orderId);
       setShowModal(true);
+      router.refresh();
     } catch (e) {
       console.error(e);
       alert("Kunde inte skapa order");
