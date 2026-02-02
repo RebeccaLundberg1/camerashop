@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import BuyButton from "./BuyButton";
 
 import { getCookie } from "../utils/cookies";
+import Link from "next/link";
 
 const CUSTOMER_COOKIE = "customerId";
 
@@ -37,18 +38,20 @@ export default function ProductCard({ product }) {
     >
       {/* Image container */}
       <div className="relative h-48 w-full">
-        <a href={`/product/${product.id}`}>
-          <Image
-            src={imgSrc}
-            alt={safeName ?? "Product"}
-            fill
-            className="object-cover"
-            unoptimized
-            onError={() => {
-              setImgSrc("/product-images/camera.jpg");
-            }}
-          />
-        </a>
+        <Link href={`/product/${product.id}`}>
+          <div className="relative h-full w-full">
+            <Image
+              src={imgSrc}
+              alt={safeName ?? "Product"}
+              fill
+              className="object-cover"
+              unoptimized
+              onError={() => {
+                setImgSrc("/product-images/camera.jpg");
+              }}
+            />
+          </div>
+        </Link>
       </div>
 
       <div className="px-6 py-4">
