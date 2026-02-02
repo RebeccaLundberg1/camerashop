@@ -7,7 +7,7 @@ export default function CartItem({ item }) {
     const safeName = item.productId;
 
     const initialSrc = safeName
-        ? `/product-images/${encodeURIComponent(item.category)}/${encodeURIComponent(safeName)}.jpg`
+        ? `/product-images/${encodeURIComponent(item.category)}/${encodeURIComponent(safeName)}/1.jpg`
         : "/product-images/camera.jpg";
 
     const [imgSrc, setImgSrc] = useState(initialSrc);
