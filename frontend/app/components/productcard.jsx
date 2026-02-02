@@ -37,7 +37,7 @@ export default function ProductCard({ product }) {
     >
       {/* Image container */}
       <div className="relative h-48 w-full">
-        <a href={`/${product.id}`}>
+        <a href={`/product/${product.id}`}>
           <Image
             src={imgSrc}
             alt={safeName ?? "Product"}
