@@ -11,7 +11,7 @@ const CUSTOMER_COOKIE = "customerId";
 export default function ProductCard({ product }) {
   const safeName = product.id;
   const initialSrc = safeName
-    ? `/product-images/${encodeURIComponent(product.category)}/${encodeURIComponent(safeName)}.jpg`
+    ? `/product-images/${encodeURIComponent(product.category)}/${encodeURIComponent(safeName)}/1.jpg`
     : "/product-images/camera.jpg";
 
   const [imgSrc, setImgSrc] = useState(initialSrc);
@@ -36,7 +36,7 @@ export default function ProductCard({ product }) {
       suppressHydrationWarning
     >
       {/* Image container */}
-      <div className="relative h-48 w-full">
+      <div className="relative aspect-7/5 w-full">
         <a href={`/${product.id}`}>
           <Image
             src={imgSrc}
