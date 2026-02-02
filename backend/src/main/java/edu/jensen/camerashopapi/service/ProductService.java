@@ -30,6 +30,12 @@ public class ProductService {
         return toInfoPageResponse(product);
     }
 
+    public List<ProductResponse> getProductsByCategory(String category) {
+        return productRepository.findByCategoryIgnoreCase(category)
+                .stream()
+                .map(this::toResponse)
+                .toList();
+    }
 
     private ProductResponse toCardResponse(Product product) {
         return new ProductResponse(

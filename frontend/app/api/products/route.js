@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 
-export async function GET() {
+export async function GET(request) {
   const backendUrl = process.env.BACKEND_API_URL;
   if (!backendUrl) {
     return NextResponse.json(
@@ -10,7 +10,8 @@ export async function GET() {
   }
 
   try {
-    const response = await fetch(`${backendUrl}/api/products`, {
+    const { search } = new URL(request.url);
+    const response = await fetch(`${backendUrl}/api/products${search}`, {
       cache: "no-store",
     });
 
