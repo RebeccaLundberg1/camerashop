@@ -12,9 +12,9 @@ public class ProductResponse {
     private String category;
     private String description;
     private BigDecimal price;
-    private int stock;
+    private Integer stock;
 
-    public ProductResponse(int id, String brand, String model, String category, String description, BigDecimal price, int stock) {
+    public ProductResponse(int id, String brand, String model, String category, String description, BigDecimal price, Integer stock) {
         this.id = id;
         this.brand = brand;
         this.model = model;
@@ -30,5 +30,5 @@ public class ProductResponse {
     public String getCategory() { return category; }
     public String getDescription() {return description; }
     public BigDecimal getPrice() { return price; }
-    public int getStock() { return stock; }
+    public Integer getStock() { return stock; }
 }

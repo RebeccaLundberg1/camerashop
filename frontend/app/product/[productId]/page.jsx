@@ -2,43 +2,26 @@ import {getServerBaseUrl} from "@/app/utils/serverBaseUrl";
 import Image from "next/image";
 import Actions from "@/app/product/Actions"
 
-//Denna kan tas bort när backend är klar
-const mockProduct = {
-    id: "1",
-    brand: "Canon",
-    model: "EOS R5",
-    description: "En högpresterande spegellös kamera med fantastisk bildkvalitet och snabb autofokus. Perfekt för både foto och video.",
-    price: 45000,
-    images: [
-        "/product-images/camera.jpg",
-        "/product-images/camera-2.jpg",
-        "/product-images/camera-3.jpg"
-    ]
-};
-
 export default async function ProductPage({params}) {
     const resolvedParams = await params;
     const productId = resolvedParams.productId;
     const baseUrl = await getServerBaseUrl();
-    const url = baseUrl ? `${baseUrl}/api/product/${productId}` : null;
+    const url = baseUrl ? `${baseUrl}/api/products/${productId}` : null;
 
     let product = null;
     let errorMessage = null;
 
     try {
-        // Ta bort kommentarer och även nedanstående rad om mockProduct när backend är klar.
-        product = mockProduct;
+        if (!url) {
+            throw new Error("Missing server base URL");
+        }
+        const response = await fetch(url, {cache: "no-store" });
 
-        //if (!url) {
-        //    throw new Error("Missing server base URL");
-        //}
-        //const response = await fetch(url, {cache: "no-store" });
-//
-        //if(!response.ok) {
-        //    errorMessage = `Products API failed: ${response.status} ${response.statusText}`;
-        //} else {
-        //    product = await response.json();
-        //}
+        if(!response.ok) {
+            errorMessage = `Products API failed: ${response.status} ${response.statusText}`;
+        } else {
+            product = await response.json();
+        }
     } catch (err) {
         errorMessage = "Service is currently unreachable.";
     }

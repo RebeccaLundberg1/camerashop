@@ -18,18 +18,40 @@ public class ProductService {
     public List<ProductResponse> getAllProducts() {
         return productRepository.findAll()
                 .stream()
-                .map(this::toResponse)
+                .map(this::toCardResponse)
                 .toList();
     }
 
-    private ProductResponse toResponse(Product product) {
+    public ProductResponse getProductInfo(Integer productId) {
+        System.out.println("Fetching product: " + productId);
+        Product product = productRepository.findById(productId)
+                .orElseThrow(() -> new RuntimeException("Product not found"));
+        //Product product = productRepository.findById(productId).orElseThrow(() -> new RuntimeException("Product not found"));
+        return toInfoPageResponse(product);
+    }
+
+
+    private ProductResponse toCardResponse(Product product) {
         return new ProductResponse(
             product.getId(),
             product.getBrand(),
             product.getModel(),
             product.getCategory(),
+            null, //product.description()
             product.getPrice(),
-            product.getStock()
+            null //product.getStock()
+        );
+    }
+
+    private ProductResponse toInfoPageResponse(Product product) {
+        return new ProductResponse(
+            product.getId(),
+            product.getBrand(),
+            product.getModel(),
+            null, //product.category()
+            product.getDescription(),
+            product.getPrice(),
+            null //product.getStock()
         );
     }
 }
