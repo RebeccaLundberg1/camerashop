@@ -31,7 +31,10 @@ export default function ProductCard({ product }) {
   const customerId = getCookie(CUSTOMER_COOKIE) ?? 1;
 
   return (
-    <div className="w-full rounded overflow-hidden shadow-lg bg-white">
+    <div
+      className="w-full rounded overflow-hidden shadow-lg bg-white"
+      suppressHydrationWarning
+    >
       {/* Image container */}
       <div className="relative h-48 w-full">
         <a href={`/${product.id}`}>
@@ -59,6 +62,7 @@ export default function ProductCard({ product }) {
             className="w-20"
             value={qty}
             onChange={(e) => setQty(Math.max(1, Number(e.target.value) || 1))}
+            suppressHydrationWarning
           />
           <BuyButton
             productId={product.id}
