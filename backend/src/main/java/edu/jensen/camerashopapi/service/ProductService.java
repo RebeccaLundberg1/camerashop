@@ -22,6 +22,13 @@ public class ProductService {
                 .toList();
     }
 
+    public List<ProductResponse> getProductsByCategory(String category) {
+        return productRepository.findByCategoryIgnoreCase(category)
+                .stream()
+                .map(this::toResponse)
+                .toList();
+    }
+
     private ProductResponse toResponse(Product product) {
         return new ProductResponse(
             product.getId(),
