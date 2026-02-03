@@ -10,15 +10,15 @@ export default function DeleteButton({cartItemId, onSuccess, onError}) {
         setAdding(true);
 
         try {
-            const response = await fetch(`/api/cart/${cartItemId}`, {
+            const response = await fetch(`/api/cart/item/${cartItemId}`, {
                 method: "DELETE",
                 cache: "no-store",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ cartItemId }),
             });
             if (!response.ok) {
+                console.log("Fel")
                 throw new Error(`Products API failed: ${response.status}`);
             } else {
+                console.log("produkt borttagen")
                 onSuccess();
             }
         } catch (e) {
