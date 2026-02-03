@@ -72,8 +72,29 @@ public class OrderService {
         int safeOrderId = Objects.requireNonNull(orderId, "orderId").intValue();
         Order order = orderRepository.findById(safeOrderId)
                 .orElseThrow(() -> new IllegalArgumentException("Order inte funnen"));
+        return toOrderDetailsResponse(order);
+    }
 
-        List<OrderItemDetailResponse> items = orderItemRepository.findByOrderId(safeOrderId)
+    @Transactional(readOnly = true)
+    public List<OrderDetailsResponse> getOrdersForCustomer(Long customerId) {
+        int safeCustomerId = Objects.requireNonNull(customerId, "customerId").intValue();
+        return orderRepository.findByCustomerId(safeCustomerId)
+                .stream()
+                .map(this::toOrderDetailsResponse)
+                .toList();
+    }
+
+    @Transactional
+    public void cancelOrder(Long orderId) {
+        int safeOrderId = Objects.requireNonNull(orderId, "orderId").intValue();
+        Order order = orderRepository.findById(safeOrderId)
+                .orElseThrow(() -> new IllegalArgumentException("Order inte funnen"));
+        orderItemRepository.deleteByOrderId(order.getId());
+        orderRepository.delete(order);
+    }
+
+    private OrderDetailsResponse toOrderDetailsResponse(Order order) {
+        List<OrderItemDetailResponse> items = orderItemRepository.findByOrderId(order.getId())
                 .stream()
                 .map(this::toItemResponse)
                 .toList();
@@ -89,15 +110,6 @@ public class OrderService {
                 order.getStatus(),
                 items,
                 totalPrice);
-    }
-
-    @Transactional
-    public void cancelOrder(Long orderId) {
-        int safeOrderId = Objects.requireNonNull(orderId, "orderId").intValue();
-        Order order = orderRepository.findById(safeOrderId)
-                .orElseThrow(() -> new IllegalArgumentException("Order inte funnen"));
-        orderItemRepository.deleteByOrderId(order.getId());
-        orderRepository.delete(order);
     }
 
     private OrderItemDetailResponse toItemResponse(Order_item orderItem) {
