@@ -3,14 +3,19 @@
 import Image from "next/image";
 import {useEffect, useState} from "react";
 import DeleteButton from "@/app/cart/DeleteButton";
+import { useRouter } from "next/navigation";
+import { getCookie } from "../utils/cookies";
 
 export default function CartItem({ item }) {
     const safeName = item.productId;
+    const CUSTOMER_COOKIE = "customerId";
+    const customerId = getCookie(CUSTOMER_COOKIE);
 
     const initialSrc = safeName
         ? `/product-images/${encodeURIComponent(item.category)}/${encodeURIComponent(safeName)}/1.jpg`
         : "/product-images/camera.jpg";
 
+    const router = useRouter();
     const [imgSrc, setImgSrc] = useState(initialSrc);
     const [toast, setToast] = useState(false)
 
@@ -53,7 +58,7 @@ export default function CartItem({ item }) {
                 <div className="flex flex-col w-40">
                     <DeleteButton
                         cartItemId = {item.cartItemId}
-                        onSuccess={() => setToast("Produkten borttagen")}
+                        onSuccess={() => { router.push(`/cart/${customerId}`);}}
                         onError={() => setToast("Kunde inte ta bort produkt")}
                     />
                     {toast && <div className="mt-2 text-sm text-green-700 text-center">{toast}</div>}
