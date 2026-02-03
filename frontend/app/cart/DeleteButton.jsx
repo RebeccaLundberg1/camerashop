@@ -43,7 +43,3 @@ export default function DeleteButton({cartItemId, onSuccess, onError}) {
         </button>
     )
 }
-
-/*
-Karusellen ta in category och productId för att hitta bilderna, dessa måste därför returneras från backend så de går att nå.
- */
