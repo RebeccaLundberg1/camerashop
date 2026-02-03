@@ -1,21 +1,17 @@
 "use client"
 
 import {useState} from "react";
-import {getCookie} from "@/app/utils/cookies";
-
-const CUSTOMER_COOKIE = "customerId";
 
 export default function DeleteButton({cartItemId, onSuccess, onError}) {
     const [adding, setAdding] = useState(false);
-    const customerId = getCookie(CUSTOMER_COOKIE) ?? 1;
 
     async function handleClick() {
-        if (!customerId) return;
+        if (!cartItemId) return;
         setAdding(true);
 
         try {
             const response = await fetch(`/api/cart/${cartItemId}`, {
-                method: "POST",
+                method: "DELETE",
                 cache: "no-store",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ cartItemId }),
@@ -48,3 +44,6 @@ export default function DeleteButton({cartItemId, onSuccess, onError}) {
     )
 }
 
+/*
+Karusellen ta in category och productId för att hitta bilderna, dessa måste därför returneras från backend så de går att nå.
+ */
