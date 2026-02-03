@@ -6,4 +6,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface OrderItemRepository extends JpaRepository<Order_item, Integer> {
     List<Order_item> findByOrderId(int orderId);
+    void deleteByOrderId(int orderId);
 }

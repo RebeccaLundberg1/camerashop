@@ -91,6 +91,15 @@ public class OrderService {
                 totalPrice);
     }
 
+    @Transactional
+    public void cancelOrder(Long orderId) {
+        int safeOrderId = Objects.requireNonNull(orderId, "orderId").intValue();
+        Order order = orderRepository.findById(safeOrderId)
+                .orElseThrow(() -> new IllegalArgumentException("Order inte funnen"));
+        orderItemRepository.deleteByOrderId(order.getId());
+        orderRepository.delete(order);
+    }
+
     private OrderItemDetailResponse toItemResponse(Order_item orderItem) {
         Product product = productRepository.findById(orderItem.getProductId())
                 .orElseThrow(() -> new IllegalArgumentException("Produkt inte funnen"));
