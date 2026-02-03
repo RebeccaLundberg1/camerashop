@@ -1,9 +1,11 @@
-import ProductCard from "./productcard";
+import ProductCard from "../components/productcard";
 import { getServerBaseUrl } from "@/app/utils/serverBaseUrl";
 
-export default async function Products() {
+export default async function ProductsPage({searchParams}) {
+  const sp = await searchParams;
+  const category = sp?.category ?? "";
   const baseUrl = await getServerBaseUrl();
-  const url = baseUrl ? `${baseUrl}/api/products` : null;
+  const url = baseUrl ? `${baseUrl}/api/products${category ? `?category=${encodeURIComponent(category)}` : ""}` : null;
 
   let products = [];
   let errorMessage = null;
@@ -21,7 +23,7 @@ export default async function Products() {
       products = Array.isArray(data) ? data : [];
     }
   } catch (err) {
-    errorMessage = "Products service is currently unreachable.";
+    errorMessage = "Page service is currently unreachable.";
   }
 
   if (errorMessage) {
