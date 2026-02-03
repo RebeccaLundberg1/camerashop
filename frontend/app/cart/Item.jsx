@@ -50,12 +50,14 @@ export default function CartItem({ item }) {
                 <p className="text-xl font-normal">
                     {item.quantity} ST
                 </p>
-                <DeleteButton
-                    cartItemId = {item.cartItemId}
-                    onSuccess={() => setToast("Produkten borttagen")}
-                    onError={() => setToast("Kunde inte ta bort produkt")}
-                />
-                {toast && <div className="mt-2 text-sm text-green-700">{toast}</div>}
+                <div className="flex flex-col w-40">
+                    <DeleteButton
+                        cartItemId = {item.cartItemId}
+                        onSuccess={() => setToast("Produkten borttagen")}
+                        onError={() => setToast("Kunde inte ta bort produkt")}
+                    />
+                    {toast && <div className="mt-2 text-sm text-green-700 text-center">{toast}</div>}
+                </div>
             </div>
         </div>
     )
