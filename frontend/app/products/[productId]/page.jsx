@@ -1,6 +1,6 @@
 import {getServerBaseUrl} from "@/app/utils/serverBaseUrl";
 import Image from "next/image";
-import Actions from "@/app/product/Actions"
+import Actions from "@/app/products/Actions"
 
 export default async function ProductPage({params}) {
     const resolvedParams = await params;

@@ -38,7 +38,7 @@ export default function ProductCard({ product }) {
     >
       {/* Image container */}
       <div className="relative h-48 w-full">
-        <Link href={`/product/${product.id}`}>
+        <Link href={`/products/${product.id}`}>
           <div className="relative h-full w-full">
             <Image
               src={imgSrc}
