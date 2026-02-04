@@ -1,14 +1,20 @@
 package edu.jensen.camerashopapi.service;
 
+import edu.jensen.camerashopapi.dto.OrderDetailsResponse;
+import edu.jensen.camerashopapi.dto.OrderItemDetailResponse;
 import edu.jensen.camerashopapi.entity.CartItem;
 import edu.jensen.camerashopapi.entity.Order;
 import edu.jensen.camerashopapi.entity.Order_item;
+import edu.jensen.camerashopapi.entity.Product;
 import edu.jensen.camerashopapi.repository.CartItemRepository;
 import edu.jensen.camerashopapi.repository.CustomerRepository;
 import edu.jensen.camerashopapi.repository.OrderItemRepository;
 import edu.jensen.camerashopapi.repository.OrderRepository;
+import edu.jensen.camerashopapi.repository.ProductRepository;
 import java.time.LocalDateTime;
+import java.math.BigDecimal;
 import java.util.List;
+import java.util.Objects;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -27,6 +33,9 @@ public class OrderService {
 
     @Autowired
     private CustomerRepository customerRepository;
+
+    @Autowired
+    private ProductRepository productRepository;
 
     @Transactional
     public Order createOrderFromCart(Long customerId) {
@@ -56,5 +65,65 @@ public class OrderService {
 
         cartItemRepository.deleteAll(cartItems);
         return order;
+    }
+
+    @Transactional(readOnly = true)
+    public OrderDetailsResponse getOrderDetails(Long orderId) {
+        int safeOrderId = Objects.requireNonNull(orderId, "orderId").intValue();
+        Order order = orderRepository.findById(safeOrderId)
+                .orElseThrow(() -> new IllegalArgumentException("Order inte funnen"));
+        return toOrderDetailsResponse(order);
+    }
+
+    @Transactional(readOnly = true)
+    public List<OrderDetailsResponse> getOrdersForCustomer(Long customerId) {
+        int safeCustomerId = Objects.requireNonNull(customerId, "customerId").intValue();
+        return orderRepository.findByCustomerId(safeCustomerId)
+                .stream()
+                .map(this::toOrderDetailsResponse)
+                .toList();
+    }
+
+    @Transactional
+    public void cancelOrder(Long orderId) {
+        int safeOrderId = Objects.requireNonNull(orderId, "orderId").intValue();
+        Order order = orderRepository.findById(safeOrderId)
+                .orElseThrow(() -> new IllegalArgumentException("Order inte funnen"));
+        orderItemRepository.deleteByOrderId(order.getId());
+        orderRepository.delete(order);
+    }
+
+    private OrderDetailsResponse toOrderDetailsResponse(Order order) {
+        List<OrderItemDetailResponse> items = orderItemRepository.findByOrderId(order.getId())
+                .stream()
+                .map(this::toItemResponse)
+                .toList();
+
+        BigDecimal totalPrice = items.stream()
+                .map(OrderItemDetailResponse::getLineTotal)
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+
+        return new OrderDetailsResponse(
+                order.getId(),
+                order.getCustomerId(),
+                order.getOrderDate(),
+                order.getStatus(),
+                items,
+                totalPrice);
+    }
+
+    private OrderItemDetailResponse toItemResponse(Order_item orderItem) {
+        Product product = productRepository.findById(orderItem.getProductId())
+                .orElseThrow(() -> new IllegalArgumentException("Produkt inte funnen"));
+        BigDecimal lineTotal = orderItem.getUnitPrice()
+                .multiply(BigDecimal.valueOf(orderItem.getQuantity()));
+        return new OrderItemDetailResponse(
+                product.getId(),
+                product.getBrand(),
+                product.getModel(),
+                product.getCategory(),
+                orderItem.getQuantity(),
+                orderItem.getUnitPrice(),
+                lineTotal);
     }
 }
