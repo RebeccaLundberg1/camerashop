@@ -57,7 +57,7 @@ export default function ProductCard({ product }) {
       <div className="px-6 py-4">
         <div className="font-bold text-xl mb-2">{product.brand}</div>
         <p className="text-gray-700 font-normal">{product.model}</p>
-        <p className="text-gray-700 text-base">{product.price} SEK</p>
+        <p className="text-gray-700 text-base">{Number(product.price).toLocaleString('sv-SE')} SEK</p>
         <div className="actions">
           <input
             type="number"
