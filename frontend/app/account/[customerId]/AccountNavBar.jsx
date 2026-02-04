@@ -1,6 +1,22 @@
-import Link from "next/link";
+"use client"
 
-export default function AccountNavBar({ customerId }) {
+import Link from "next/link";
+import {getCookie} from "@/app/utils/cookies";
+import {useEffect, useState} from "react";
+
+export default function AccountNavBar() {
+    const [customerId, setCustomerId] = useState(null);
+
+    useEffect(() => {
+        const getCustomerId = () => {
+            const CUSTOMER_COOKIE = "customerId";
+            return getCookie(CUSTOMER_COOKIE);
+        };
+        setCustomerId(getCustomerId());
+    }, []);
+
+    if (!customerId) return null;
+
     return (
         <div>
             <ul>
