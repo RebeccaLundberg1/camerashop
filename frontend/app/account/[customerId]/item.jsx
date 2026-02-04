@@ -24,9 +24,24 @@ export default function OrderItem({ item }) {
 
                 {isExpanded && (
                     <div className="mt-2 pl-4 text-gray-700">
+                        <hr className="border-t-3 border-gray-500 my-4" />
+                        <div className="grid grid-cols-[60px_2fr_1fr_120px_120px] mb-4 text-gray-700">
+                            <p className="text-center font-bold">Antal</p>
+                            <p className="font-bold">Produkt</p>
+                            <p className="font-bold">Kategori</p>
+                            <p className="text-right font-bold">Styckpris</p>
+                            <p className="text-right font-bold">Totalpris</p>
+                        </div>
                         {item.items.map((product) => (
                             <div key={product.productId}>
-                                {product.brand} {product.model} ({product.category}) x {product.quantity} – ${product.lineTotal}
+                                <div className="grid grid-cols-[60px_2fr_1fr_120px_120px] text-gray-700 items-center">
+                                    <p className="text-center">{product.quantity}</p>
+                                    <p>{product.brand} {product.model}</p>
+                                    <p className="italic">({product.category})</p>
+                                    <p className="text-right">{Number(product.unitPrice).toLocaleString('sv-SE')} SEK</p>
+                                    <p className="text-right font-bold">{Number(product.lineTotal).toLocaleString('sv-SE')} SEK</p>
+                                </div>
+                                <hr className="border-t border-gray-300 my-1" />
                             </div>
                         ))}
                     </div>
@@ -40,5 +55,12 @@ export default function OrderItem({ item }) {
     "customerId":38,
     "orderDate":"2026-02-04T08:55:25.912891",
     "status":"CREATED",
-    "items":[{"productId":100102,"brand":"Nikon","model":"Z8","category":"Camera","quantity":1,"unitPrice":48990.00,"lineTotal":48990.00}],
+    "items":[{
+        "productId":100102,
+        "brand":"Nikon",
+        "model":"Z8",
+        "category":"Camera",
+        "quantity":1,
+        "unitPrice":48990.00,
+        "lineTotal":48990.00}],
     "totalPrice":48990.00}]
