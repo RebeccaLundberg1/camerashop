@@ -78,10 +78,3 @@ INSERT INTO products (id, brand, model, category, price, description, stock) VAL
 (600603, 'Nikon', 'EN-EL15c Battery', 'Accessory', 899.00,
 'Original Nikon-batteri med hög kapacitet, anpassat för Z-seriens kameror och utformat för lång drifttid och stabil prestanda.',
 6);
-
-INSERT INTO customers (id) VALUES (1);
-
-INSERT INTO cart_items (quantity, customer_id, product_id) VALUES
-(1, 1, 100101),
-(2, 1, 400401),
-(1, 1, 500501);
