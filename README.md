@@ -16,6 +16,7 @@ Full-stack demo web shop with a Spring Boot API and a Next.js frontend.
 ## Environment variables
 
 See `.env.example` for the required variables. Use it as the base for your local `.env`.
+Set `USE_SEEDING=true` to auto-seed the database on first run (only when the `products` table is empty).
 
 Example values for local Docker are included in `.env.example`.
 
@@ -58,6 +59,7 @@ cd backend
 export SPRING_DATASOURCE_URL=jdbc:mariadb://localhost:3306/camerashop
 export SPRING_DATASOURCE_USERNAME=camerashop
 export SPRING_DATASOURCE_PASSWORD=camerashop
+export USE_SEEDING=true
 ./mvnw spring-boot:run
 ```
 
