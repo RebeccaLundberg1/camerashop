@@ -55,7 +55,7 @@ public class ProductService {
         product.getId(),
         product.getBrand(),
         product.getModel(),
-        null, // product.category()
+        product.getCategory(),
         product.getDescription(),
         product.getPrice(),
         null // product.getStock()
