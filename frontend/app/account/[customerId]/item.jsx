@@ -1,9 +1,19 @@
 "use client";
 
-import {useState} from "react";
+import {useEffect, useState} from "react";
+import OrderDeleteButton from "@/app/account/[customerId]/DeleteButton";
+import {useRouter} from "next/navigation";
 
 export default function OrderItem({ item }) {
     const [isExpanded, setIsExpanded] = useState(false)
+    const [toast, setToast] = useState(false)
+    const router = useRouter();
+
+    useEffect(() => {
+        if (!toast) return;
+        const t = setTimeout(() => setToast(null), 2000);
+        return () => clearTimeout(t);
+    }, [toast]);
 
     return (
         <div
@@ -44,23 +54,25 @@ export default function OrderItem({ item }) {
                                 <hr className="border-t border-gray-300 my-1" />
                             </div>
                         ))}
+                        {item.status === "CREATED" && (
+                            <div className="flex flex-col items-end"
+                                 onClick={(e) => e.stopPropagation()}>
+                                <OrderDeleteButton
+                                    orderId = {item.orderId}
+                                    onSuccess={() => {
+                                        setToast("Ordern är avbruten");
+                                        setTimeout(() => {
+                                            router.refresh();
+                                        }, 1200);
+                                    }}
+                                    onError={() => setToast("Kunde inte avbryta ordern")}/>
+                                {toast && <div className="mr-4 text-sm text-green-700 text-center">{toast}</div>}
+                            </div>
+                        )}
+
                     </div>
                 )}
             </div>
         </div>
     )
 }
-
-[{"orderId":9,
-    "customerId":38,
-    "orderDate":"2026-02-04T08:55:25.912891",
-    "status":"CREATED",
-    "items":[{
-        "productId":100102,
-        "brand":"Nikon",
-        "model":"Z8",
-        "category":"Camera",
-        "quantity":1,
-        "unitPrice":48990.00,
-        "lineTotal":48990.00}],
-    "totalPrice":48990.00}]
