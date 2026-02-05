@@ -56,7 +56,7 @@ export default async function CartPage({params}) {
                     )}
                     <div className="flex bg-white shadow rounded justify-between items-center">
                         <h2 className="p-4 text-2xl font-bold">
-                            Totalt pris: {totalPrice} SEK
+                            Totalt pris: {Number(totalPrice).toLocaleString('sv-SE')} SEK
                         </h2>
                         <OrderButton
                             customerId = {customerId}

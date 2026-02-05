@@ -35,7 +35,7 @@ export default function CartItem({ item }) {
                     {item.brand} {item.model}
                 </h2>
                 <p className="text-xl font-normal">
-                    {item.totalPrice} SEK
+                    {Number(item.totalPrice).toLocaleString('sv-SE')} SEK
                 </p>
             </div>
             <div className="flex flex-col justify-center gap-1 w-50">
