@@ -31,9 +31,6 @@ function isDocumentNavigation(request) {
 export default async function proxy(request) {
   const existingCookie = request.cookies.get(CUSTOMER_COOKIE);
   if (existingCookie) {
-    console.log(
-      `[customerId] Reusing existing cookie: ${existingCookie.value}`,
-    );
     return NextResponse.next();
   }
 
