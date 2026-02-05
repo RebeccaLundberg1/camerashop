@@ -42,11 +42,15 @@ export default async function ProductPage({params}) {
     return (
         <div className="flex flex-col min-h-screen bg-[#e3e9e9] font-sans dark:bg-[#e3e9e9] p-6">
             <div className="max-w-3xl w-full mx-auto">
-                {/*<PictureCarousel></PictureCarousel>*/}
+                {/*<PictureCarousel(product.productId, product.category)/>*/}
                 {/* Följande div med bilden är bara för att visa på ett ungefärligt exempel när carousel är klar */}
-                <div className="relative w-full aspect-5/4">
+                <div className="relative w-full aspect-7/5">
                     <Image
-                        src={ "/product-images/camera.jpg"}
+                        src={
+                            product.category && product.id
+                                ? `/product-images/${encodeURIComponent(product.category)}/${encodeURIComponent(product.id)}/1.jpg`
+                                : "/product-images/camera.jpg"
+                        }
                         alt={"Product"}
                         fill
                         className="object-cover"
