@@ -37,7 +37,7 @@ export default function ProductCard({ product }) {
       suppressHydrationWarning
     >
       {/* Image container */}
-      <div className="relative h-48 w-full">
+      <div className="relative aspect-7/5 w-full">
         <Link href={`/products/${product.id}`}>
           <div className="relative h-full w-full">
             <Image

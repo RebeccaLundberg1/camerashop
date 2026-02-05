@@ -14,7 +14,8 @@ export async function GET(request, { params } = {}) {
   const cartIndex = segments.lastIndexOf("cart");
   const customerIdFromPath =
     cartIndex >= 0 ? segments[cartIndex + 1] : undefined;
-  const customerId = params?.customerId ?? customerIdFromPath;
+  const resolvedParams = await params;
+  const customerId = resolvedParams?.customerId ?? customerIdFromPath;
   if (!customerId) {
     return NextResponse.json({ error: "Missing customerId." }, { status: 400 });
   }

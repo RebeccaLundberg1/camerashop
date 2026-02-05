@@ -3,6 +3,7 @@ import "./globals.css";
 import NavBar from "./components/NavBar";
 import CartButton from "@/app/components/CartButton";
 import Image from "next/image";
+import AccountButton from "@/app/components/AccountButton";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -43,8 +44,10 @@ export default function RootLayout({ children }) {
             {children}
           </main>
         </div>
-
-        <CartButton/>
+        <div className="fixed top-4 right-4 flex gap-6">
+          <AccountButton/>
+          <CartButton/>
+        </div>
       </body>
     </html>
   );

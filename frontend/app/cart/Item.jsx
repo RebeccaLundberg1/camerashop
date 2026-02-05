@@ -2,19 +2,32 @@
 
 import Image from "next/image";
 import {useEffect, useState} from "react";
+import DeleteButton from "@/app/cart/DeleteButton";
+import { useRouter } from "next/navigation";
+import { getCookie } from "../utils/cookies";
 
 export default function CartItem({ item }) {
     const safeName = item.productId;
+    const CUSTOMER_COOKIE = "customerId";
+    const customerId = getCookie(CUSTOMER_COOKIE);
 
     const initialSrc = safeName
         ? `/product-images/${encodeURIComponent(item.category)}/${encodeURIComponent(safeName)}/1.jpg`
         : "/product-images/camera.jpg";
 
+    const router = useRouter();
     const [imgSrc, setImgSrc] = useState(initialSrc);
+    const [toast, setToast] = useState(false)
 
     useEffect(() => {
         setImgSrc(initialSrc);
     }, [initialSrc]);
+
+    useEffect(() => {
+        if (!toast) return;
+        const t = setTimeout(() => setToast(null), 2000);
+        return () => clearTimeout(t);
+    }, [toast]);
 
     return (
         <div className="p-2 flex bg-white shadow rounded w-full gap-4">
@@ -38,10 +51,18 @@ export default function CartItem({ item }) {
                     {Number(item.totalPrice).toLocaleString('sv-SE')} SEK
                 </p>
             </div>
-            <div className="flex flex-col justify-center gap-1 w-50">
+            <div className="flex justify-center items-center gap-2 w-70">
                 <p className="text-xl font-normal">
                     {item.quantity} ST
                 </p>
+                <div className="flex flex-col w-40">
+                    <DeleteButton
+                        cartItemId = {item.cartItemId}
+                        onSuccess={() => { router.push(`/cart/${customerId}`);}}
+                        onError={() => setToast("Kunde inte ta bort produkt")}
+                    />
+                    {toast && <div className="mt-2 text-sm text-green-700 text-center">{toast}</div>}
+                </div>
             </div>
         </div>
     )
