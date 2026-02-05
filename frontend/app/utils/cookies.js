@@ -4,7 +4,8 @@ export function getCookie(name) {
   }
 
   const match = document.cookie
-    .split("; ")
+    .split(";")
+    .map((row) => row.trim())
     .find((row) => row.startsWith(`${name}=`));
   if (!match) {
     return null;
