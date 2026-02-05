@@ -5,6 +5,7 @@ import CartButton from "@/app/components/CartButton";
 import Image from "next/image";
 import AccountButton from "@/app/components/AccountButton";
 import CustomerCookieGate from "@/app/components/CustomerCookieGate";
+import Page from "@/app/products/page";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
