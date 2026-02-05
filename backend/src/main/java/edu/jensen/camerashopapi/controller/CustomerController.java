@@ -33,6 +33,12 @@ public class CustomerController {
     return new CustomerIdResponse(customer.getId());
   }
 
+  @PostMapping("/validate/{customerId}")
+  public CustomerIdResponse validateCustomer(@PathVariable("customerId") int customerId) {
+    int resolvedCustomerId = customerService.getOrCreateCustomerId(customerId);
+    return new CustomerIdResponse(resolvedCustomerId);
+  }
+
   @PostMapping("/{customerId}/orders")
   public ResponseEntity<OrderIdResponse> createOrderForCustomer(
       @PathVariable("customerId") Long customerId) {

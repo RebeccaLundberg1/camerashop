@@ -78,7 +78,7 @@ public class OrderService {
     @Transactional(readOnly = true)
     public List<OrderDetailsResponse> getOrdersForCustomer(Long customerId) {
         int safeCustomerId = Objects.requireNonNull(customerId, "customerId").intValue();
-        return orderRepository.findByCustomerId(safeCustomerId)
+        return orderRepository.findByCustomerIdOrderByOrderDateDesc(safeCustomerId)
                 .stream()
                 .map(this::toOrderDetailsResponse)
                 .toList();

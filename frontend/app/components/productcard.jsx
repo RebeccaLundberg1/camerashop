@@ -58,23 +58,25 @@ export default function ProductCard({ product }) {
         <div className="font-bold text-xl mb-2">{product.brand}</div>
         <p className="text-gray-700 font-normal">{product.model}</p>
         <p className="text-gray-700 text-base">{Number(product.price).toLocaleString('sv-SE')} SEK</p>
-        <div className="actions">
-          <input
-            type="number"
-            min="1"
-            className="w-20"
-            value={qty}
-            onChange={(e) => setQty(Math.max(1, Number(e.target.value) || 1))}
-            suppressHydrationWarning
-          />
-          <BuyButton
-            productId={product.id}
-            quantity={Number(qty) || 1}
-            customerId={customerId}
-            onSuccess={() => setToast("Lagt i kundkorgen")}
-            onError={() => setToast("Kunde inte lägga till")}
-          />
-          {toast && <div className="mt-2 text-sm text-green-700">{toast}</div>}
+        <div>
+          <div className="actions flex justify-between">
+            <input
+                type="number"
+                min="1"
+                className="w-20"
+                value={qty}
+                onChange={(e) => setQty(Math.max(1, Number(e.target.value) || 1))}
+                suppressHydrationWarning
+            />
+            <BuyButton
+                productId={product.id}
+                quantity={Number(qty) || 1}
+                customerId={customerId}
+                onSuccess={() => setToast("Lagt i kundkorgen")}
+                onError={() => setToast("Kunde inte lägga till")}
+            />
+          </div>
+          {toast && <div className="mt-2 text-sm text-right text-green-700">{toast}</div>}
         </div>
       </div>
     </div>

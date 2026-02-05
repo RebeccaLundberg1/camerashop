@@ -16,4 +16,11 @@ public class CustomerService {
         Customer customer = new Customer();
         return customerRepository.save(customer);
     }
+
+    public int getOrCreateCustomerId(int customerId) {
+        if (customerId > 0 && customerRepository.existsById(customerId)) {
+            return customerId;
+        }
+        return createCustomer().getId();
+    }
 }

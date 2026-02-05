@@ -4,6 +4,8 @@ import NavBar from "./components/NavBar";
 import CartButton from "@/app/components/CartButton";
 import Image from "next/image";
 import AccountButton from "@/app/components/AccountButton";
+import CustomerCookieGate from "@/app/components/CustomerCookieGate";
+import Page from "@/app/products/page";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -48,6 +50,7 @@ export default function RootLayout({ children }) {
           <AccountButton/>
           <CartButton/>
         </div>
+        <CustomerCookieGate />
       </body>
     </html>
   );
