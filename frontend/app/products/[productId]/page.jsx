@@ -44,21 +44,10 @@ export default async function ProductPage({params}) {
         <div className="flex flex-col min-h-screen bg-[#e3e9e9] font-sans dark:bg-[#e3e9e9] p-6">
             <div className="max-w-3xl w-full mx-auto">
                 <div className="bg-white rounded shadow p-4">
-                    {/*<PictureCarousel(product.productId, product.category)/>*/}
-                    {/* Följande div med bilden är bara för att visa på ett ungefärligt exempel när carousel är klar */}
-                    <div className="relative w-full aspect-7/5">
-                        <Image
-                            src={
-                                product.category && product.id
-                                    ? `/product-images/${encodeURIComponent(product.category)}/${encodeURIComponent(product.id)}/1.jpg`
-                                    : "/product-images/camera.jpg"
-                            }
-                            alt={"Product"}
-                            fill
-                            className="object-cover"
-                            unoptimized
-                        />
-                    </div>
+                    <Carousel
+                        productId={product.id}
+                        category={product.category}
+                    />
                     <h1 className="text-3xl font-bold m-6">{product.brand} {product.model} </h1>
                     <p className="font-normal m-6">{product.description}</p>
                     <h2 className="text-2xl font-bold m-6">Pris: {Number(product.price).toLocaleString('sv-SE')} SEK</h2>
